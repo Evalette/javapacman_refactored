@@ -1,6 +1,3 @@
-import java.util.HashSet;
-import java.util.Set;
-
 /* This is the pacman object */
 class Player extends Mover {
     /* Direction is used in demoMode, currDirection and desiredDirection are used in non demoMode*/
