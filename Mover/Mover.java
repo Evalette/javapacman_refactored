@@ -103,4 +103,25 @@ abstract class Mover {
     public boolean isChoiceDest() {
         return x % gridSize == 0 && y % gridSize == 0;
     }
+
+    protected void moveIfValid(char direction) {
+        switch (direction) {
+            case 'L':
+                if (isValidDest(x - increment, y))
+                    x -= increment;
+                break;
+            case 'R':
+                if (isValidDest(x + gridSize, y))
+                    x += increment;
+                break;
+            case 'U':
+                if (isValidDest(x, y - increment))
+                    y -= increment;
+                break;
+            case 'D':
+                if (isValidDest(x, y + gridSize))
+                    y += increment;
+                break;
+        }
+    }
 }
