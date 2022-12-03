@@ -42,6 +42,12 @@ class Player extends Mover {
         if (isChoiceDest()) {
             direction = newDirection();
         }
+        moveIntoDirection(direction, gridSize);
+        currDirection = direction;
+        frameCount++;
+    }
+
+    private void moveIntoDirection(char direction, int gridSize) {
         switch (direction) {
             case 'L':
                 if (isValidDest(x - increment, y)) {
@@ -68,8 +74,6 @@ class Player extends Mover {
                     y += increment;
                 break;
         }
-        currDirection = direction;
-        frameCount++;
     }
 
     /* The move function moves the pacman for one frame in non demo mode */
@@ -91,32 +95,7 @@ class Player extends Mover {
         }
         /* If we haven't moved, then move in the direction the pacman was headed anyway */
         if (lastX == x && lastY == y) {
-            switch (currDirection) {
-                case 'L':
-                    if (isValidDest(x - increment, y))
-                        x -= increment;
-                    else if (y == 9 * gridSize && x < 2 * gridSize) {
-                        x = max - gridSize;
-                        teleport = true;
-                    }
-                    break;
-                case 'R':
-                    if (isValidDest(x + gridSize, y))
-                        x += increment;
-                    else if (y == 9 * gridSize && x > max - gridSize * 2) {
-                        x = gridSize;
-                        teleport = true;
-                    }
-                    break;
-                case 'U':
-                    if (isValidDest(x, y - increment))
-                        y -= increment;
-                    break;
-                case 'D':
-                    if (isValidDest(x, y + gridSize))
-                        y += increment;
-                    break;
-            }
+            moveIntoDirection(currDirection, gridSize);
         }
 
         /* If we did change direction, update currDirection to reflect that */
