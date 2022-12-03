@@ -590,17 +590,11 @@ public class Board extends JPanel {
         /*Draw the ghosts */
         if (ghost1.frameCount < 5) {
             /* Draw first frame of ghosts */
-            g.drawImage(ghost10, ghost1.x, ghost1.y, Color.BLACK, null);
-            g.drawImage(ghost20, ghost2.x, ghost2.y, Color.BLACK, null);
-            g.drawImage(ghost30, ghost3.x, ghost3.y, Color.BLACK, null);
-            g.drawImage(ghost40, ghost4.x, ghost4.y, Color.BLACK, null);
+            drawGhosts(g, ghost10, ghost20, ghost30, ghost40);
             ghost1.frameCount++;
         } else {
             /* Draw second frame of ghosts */
-            g.drawImage(ghost11, ghost1.x, ghost1.y, Color.BLACK, null);
-            g.drawImage(ghost21, ghost2.x, ghost2.y, Color.BLACK, null);
-            g.drawImage(ghost31, ghost3.x, ghost3.y, Color.BLACK, null);
-            g.drawImage(ghost41, ghost4.x, ghost4.y, Color.BLACK, null);
+            drawGhosts(g, ghost11, ghost21, ghost31, ghost41);
             if (ghost1.frameCount >= 10)
                 ghost1.frameCount = 0;
             else
@@ -628,5 +622,12 @@ public class Board extends JPanel {
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
 
+    }
+
+    private void drawGhosts(Graphics g, Image ghost10, Image ghost20, Image ghost30, Image ghost40) {
+        g.drawImage(ghost10, ghost1.x, ghost1.y, Color.BLACK, null);
+        g.drawImage(ghost20, ghost2.x, ghost2.y, Color.BLACK, null);
+        g.drawImage(ghost30, ghost3.x, ghost3.y, Color.BLACK, null);
+        g.drawImage(ghost40, ghost4.x, ghost4.y, Color.BLACK, null);
     }
 }
