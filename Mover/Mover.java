@@ -21,6 +21,12 @@ abstract class Mover {
     /* Current ghost location */
     int x;
     int y;
+    /* Last ghost location*/
+    int lastX;
+    int lastY;
+    /* The pellet the ghost is on top of */
+    int pelletX;
+    int pelletY;
 
     /* Generic constructor */
     public Mover(int x, int y) {
@@ -36,6 +42,10 @@ abstract class Mover {
         direction = 'L';
         this.x = x;
         this.y = y;
+        this.lastX = x;
+        this.lastY = y;
+        pelletX = x / gridSize - 1;
+        pelletY = x / gridSize - 1;
     }
 
     /* Updates the state information */

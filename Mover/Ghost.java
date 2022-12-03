@@ -1,25 +1,14 @@
 /* Ghost class controls the ghost. */
 class Ghost extends Mover {
 
-    /* Last ghost location*/
-    int lastX;
-    int lastY;
-
-    /* The pellet the ghost is on top of */
-    int pelletX, pelletY;
-
     /* The pellet the ghost was last on top of */
     int lastPelletX, lastPelletY;
 
     /*Constructor places ghost and updates states*/
     public Ghost(int x, int y) {
         super(x, y);
-        pelletX = x / gridSize - 1;
-        pelletY = x / gridSize - 1;
         lastPelletX = pelletX;
         lastPelletY = pelletY;
-        this.lastX = x;
-        this.lastY = y;
     }
 
     /* update pellet status */
