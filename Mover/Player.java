@@ -38,12 +38,6 @@ class Player extends Mover {
         desiredDirection = 'L';
     }
 
-
-    /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
-    public boolean isChoiceDest() {
-        return x % gridSize == 0 && y % gridSize == 0;
-    }
-
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
     public void demoMove() {
         lastX = x;
@@ -163,7 +157,7 @@ class Player extends Mover {
 
     /* Update what pellet the pacman is on top of */
     public void updatePellet() {
-        if (x % gridSize == 0 && y % gridSize == 0) {
+        if (super.isChoiceDest()) {
             pelletX = x / gridSize - 1;
             pelletY = y / gridSize - 1;
         }

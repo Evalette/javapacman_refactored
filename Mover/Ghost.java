@@ -36,11 +36,6 @@ class Ghost extends Mover {
 
     }
 
-    /* Determines if the location is one where the ghost has to make a decision*/
-    public boolean isChoiceDest() {
-        return x % gridSize == 0 && y % gridSize == 0;
-    }
-
     /* Random move function for ghost */
     public void move() {
         lastX = x;
