@@ -4,7 +4,6 @@ import java.util.Set;
 /* This is the pacman object */
 class Player extends Mover {
     /* Direction is used in demoMode, currDirection and desiredDirection are used in non demoMode*/
-    char direction;
     char currDirection;
     char desiredDirection;
 
@@ -14,10 +13,6 @@ class Player extends Mover {
     /* Last location */
     int lastX;
     int lastY;
-
-    /* Current location */
-    int x;
-    int y;
 
     /* Which pellet the pacman is on top of */
     int pelletX;
@@ -31,6 +26,7 @@ class Player extends Mover {
 
     /* Constructor places pacman in initial location and orientation */
     public Player(int x, int y) {
+        super(x, y);
 
         teleport = false;
         pelletsEaten = 0;
@@ -38,54 +34,10 @@ class Player extends Mover {
         pelletY = y / gridSize - 1;
         this.lastX = x;
         this.lastY = y;
-        this.x = x;
-        this.y = y;
         currDirection = 'L';
         desiredDirection = 'L';
     }
 
-
-    /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
-    public char newDirection() {
-        int random;
-        char backwards = 'U';
-        int lookX = x, lookY = y;
-        Set<Character> set = new HashSet<>();
-        switch (direction) {
-            case 'L' -> backwards = 'R';
-            case 'R' -> backwards = 'L';
-            case 'U' -> backwards = 'D';
-            case 'D' -> backwards = 'U';
-        }
-        char newDirection = backwards;
-        while (newDirection == backwards || !isValidDest(lookX, lookY)) {
-            if (set.size() == 3) {
-                newDirection = backwards;
-                break;
-            }
-
-            lookX = x;
-            lookY = y;
-            random = (int) (Math.random() * 4) + 1;
-            if (random == 1) {
-                newDirection = 'L';
-                lookX -= increment;
-            } else if (random == 2) {
-                newDirection = 'R';
-                lookX += gridSize;
-            } else if (random == 3) {
-                newDirection = 'U';
-                lookY -= increment;
-            } else if (random == 4) {
-                newDirection = 'D';
-                lookY += gridSize;
-            }
-            if (newDirection != backwards) {
-                set.add(newDirection);
-            }
-        }
-        return newDirection;
-    }
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
     public boolean isChoiceDest() {

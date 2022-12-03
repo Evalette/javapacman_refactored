@@ -1,18 +1,9 @@
-import java.util.HashSet;
-import java.util.Set;
-
 /* Ghost class controls the ghost. */
 class Ghost extends Mover {
-    /* Direction ghost is heading */
-    char direction;
 
     /* Last ghost location*/
     int lastX;
     int lastY;
-
-    /* Current ghost location */
-    int x;
-    int y;
 
     /* The pellet the ghost is on top of */
     int pelletX, pelletY;
@@ -22,15 +13,13 @@ class Ghost extends Mover {
 
     /*Constructor places ghost and updates states*/
     public Ghost(int x, int y) {
-        direction = 'L';
+        super(x, y);
         pelletX = x / gridSize - 1;
         pelletY = x / gridSize - 1;
         lastPelletX = pelletX;
         lastPelletY = pelletY;
         this.lastX = x;
         this.lastY = y;
-        this.x = x;
-        this.y = y;
     }
 
     /* update pellet status */
@@ -50,53 +39,6 @@ class Ghost extends Mover {
     /* Determines if the location is one where the ghost has to make a decision*/
     public boolean isChoiceDest() {
         return x % gridSize == 0 && y % gridSize == 0;
-    }
-
-    /* Chooses a new direction randomly for the ghost to move */
-    public char newDirection() {
-        int random;
-        char backwards = 'U';
-        int lookX = x, lookY = y;
-        Set<Character> set = new HashSet<>();
-        switch (direction) {
-            case 'L' -> backwards = 'R';
-            case 'R' -> backwards = 'L';
-            case 'U' -> backwards = 'D';
-            case 'D' -> backwards = 'U';
-        }
-
-        char newDirection = backwards;
-        /* While we still haven't found a valid direction */
-        while (newDirection == backwards || !isValidDest(lookX, lookY)) {
-            /* If we've tried every location, turn around and break the loop */
-            if (set.size() == 3) {
-                newDirection = backwards;
-                break;
-            }
-
-            lookX = x;
-            lookY = y;
-
-            /* Randomly choose a direction */
-            random = (int) (Math.random() * 4) + 1;
-            if (random == 1) {
-                newDirection = 'L';
-                lookX -= increment;
-            } else if (random == 2) {
-                newDirection = 'R';
-                lookX += gridSize;
-            } else if (random == 3) {
-                newDirection = 'U';
-                lookY -= increment;
-            } else if (random == 4) {
-                newDirection = 'D';
-                lookY += gridSize;
-            }
-            if (newDirection != backwards) {
-                set.add(newDirection);
-            }
-        }
-        return newDirection;
     }
 
     /* Random move function for ghost */
