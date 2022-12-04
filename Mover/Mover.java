@@ -7,15 +7,15 @@ abstract class Mover {
     int frameCount = 0;
 
     /* State contains the game map */
-    boolean[][] state;
+    final boolean[][] state;
 
     /* gridSize is the size of one square in the game.
        max is the height/width of the game.
        increment is the speed at which the object moves,
        1 increment per move() call */
-    int gridSize;
-    int max;
-    int increment;
+    final int gridSize;
+    final int max;
+    final int increment;
     /* Direction ghost is heading */
     char direction;
     /* Current ghost location */

@@ -11,22 +11,22 @@ import java.io.*;
 public class Board extends JPanel {
     /* Initialize the images*/
     /* For NOT JAR file*/
-    Image pacmanImage = Toolkit.getDefaultToolkit().getImage("img/pacman.jpg");
-    Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage("img/pacmanup.jpg");
-    Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage("img/pacmandown.jpg");
-    Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage("img/pacmanleft.jpg");
-    Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage("img/pacmanright.jpg");
-    Image ghost10 = Toolkit.getDefaultToolkit().getImage("img/ghost10.jpg");
-    Image ghost20 = Toolkit.getDefaultToolkit().getImage("img/ghost20.jpg");
-    Image ghost30 = Toolkit.getDefaultToolkit().getImage("img/ghost30.jpg");
-    Image ghost40 = Toolkit.getDefaultToolkit().getImage("img/ghost40.jpg");
-    Image ghost11 = Toolkit.getDefaultToolkit().getImage("img/ghost11.jpg");
-    Image ghost21 = Toolkit.getDefaultToolkit().getImage("img/ghost21.jpg");
-    Image ghost31 = Toolkit.getDefaultToolkit().getImage("img/ghost31.jpg");
-    Image ghost41 = Toolkit.getDefaultToolkit().getImage("img/ghost41.jpg");
-    Image titleScreenImage = Toolkit.getDefaultToolkit().getImage("img/titleScreen.jpg");
-    Image gameOverImage = Toolkit.getDefaultToolkit().getImage("img/gameOver.jpg");
-    Image winScreenImage = Toolkit.getDefaultToolkit().getImage("img/winScreen.jpg");
+    final Image pacmanImage = Toolkit.getDefaultToolkit().getImage("img/pacman.jpg");
+    final Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage("img/pacmanup.jpg");
+    final Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage("img/pacmandown.jpg");
+    final Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage("img/pacmanleft.jpg");
+    final Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage("img/pacmanright.jpg");
+    final Image ghost10 = Toolkit.getDefaultToolkit().getImage("img/ghost10.jpg");
+    final Image ghost20 = Toolkit.getDefaultToolkit().getImage("img/ghost20.jpg");
+    final Image ghost30 = Toolkit.getDefaultToolkit().getImage("img/ghost30.jpg");
+    final Image ghost40 = Toolkit.getDefaultToolkit().getImage("img/ghost40.jpg");
+    final Image ghost11 = Toolkit.getDefaultToolkit().getImage("img/ghost11.jpg");
+    final Image ghost21 = Toolkit.getDefaultToolkit().getImage("img/ghost21.jpg");
+    final Image ghost31 = Toolkit.getDefaultToolkit().getImage("img/ghost31.jpg");
+    final Image ghost41 = Toolkit.getDefaultToolkit().getImage("img/ghost41.jpg");
+    final Image titleScreenImage = Toolkit.getDefaultToolkit().getImage("img/titleScreen.jpg");
+    final Image gameOverImage = Toolkit.getDefaultToolkit().getImage("img/gameOver.jpg");
+    final Image winScreenImage = Toolkit.getDefaultToolkit().getImage("img/winScreen.jpg");
 
     /* Initialize the player and ghosts */
     Player player = new Player(200, 300);
@@ -58,8 +58,8 @@ public class Board extends JPanel {
     boolean[][] pellets;
 
     /* Game dimensions */
-    int gridSize;
-    int max;
+    final int gridSize;
+    final int max;
 
     /* State flags*/
     boolean stopped;
@@ -70,13 +70,13 @@ public class Board extends JPanel {
     int New;
 
     /* Used to call sound effects */
-    GameSounds sounds;
+    final GameSounds sounds;
 
     int lastPelletEatenX = 0;
     int lastPelletEatenY = 0;
 
     /* This is the font used for the menus */
-    Font font = new Font("Monospaced", Font.BOLD, 12);
+    final Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
     public Board() {

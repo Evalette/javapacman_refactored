@@ -14,10 +14,10 @@ public class Pacman implements MouseListener, KeyListener {
     long timer = -1;
 
     /* Create a new board */
-    Board b = new Board();
+    final Board b = new Board();
 
     /* This timer is used to do request new frames be drawn*/
-    javax.swing.Timer frameTimer;
+   final javax.swing.Timer frameTimer;
 
 
     /* This constructor creates the entire game essentially */
