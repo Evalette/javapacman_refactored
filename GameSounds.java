@@ -1,5 +1,6 @@
 /* Drew Schuster */
 
+import java.io.IOException;
 import java.net.URL;
 import javax.sound.sampled.*;
 
@@ -12,34 +13,36 @@ public class GameSounds {
     /* Keeps track of whether the eating sound is playing*/
     boolean stopped;
 
-
     /* Initialize audio files */
     public GameSounds() {
         stopped = true;
-        URL url;
-        AudioInputStream audioIn;
 
         try {
             // Pacman eating sound
-            url = this.getClass().getClassLoader().getResource("sounds/nomnom.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
+            AudioInputStream audioIn = getAudioInputStream("sounds/nomnom.wav");
             nomNom = AudioSystem.getClip();
             nomNom.open(audioIn);
 
             // newGame        
-            url = this.getClass().getClassLoader().getResource("sounds/newGame.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
+            audioIn = getAudioInputStream( "sounds/newGame.wav");
             newGame = AudioSystem.getClip();
             newGame.open(audioIn);
 
             // death        
-            url = this.getClass().getClassLoader().getResource("sounds/death.wav");
-            audioIn = AudioSystem.getAudioInputStream(url);
+            audioIn = getAudioInputStream( "sounds/death.wav");
             death = AudioSystem.getClip();
             death.open(audioIn);
 
         } catch (Exception ignored) {
         }
+    }
+
+    private AudioInputStream getAudioInputStream(String name) throws UnsupportedAudioFileException, IOException {
+        URL url;
+        AudioInputStream audioIn;
+        url = this.getClass().getClassLoader().getResource(name);
+        audioIn = AudioSystem.getAudioInputStream(url);
+        return audioIn;
     }
 
     /* Play pacman eating sound */
