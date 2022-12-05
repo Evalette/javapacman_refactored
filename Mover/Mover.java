@@ -19,6 +19,10 @@ abstract class Mover {
     final int increment;
     /* Direction ghost is heading */
     Direction direction;
+
+    /* first x and y*/
+    int initialX, initialY;
+
     /* Current ghost location */
     int x;
     int y;
@@ -41,6 +45,8 @@ abstract class Mover {
             }
         }
         direction = new Left();
+        this.initialX = x;
+        this.initialY = y;
         this.x = x;
         this.y = y;
         this.lastX = x;
@@ -108,5 +114,10 @@ abstract class Mover {
 
     public void copyArea(Graphics g) {
         g.copyArea(x - 20, y - 20, 80, 80, 0, 0);
+    }
+
+    public void resetPosition(){
+        x = initialX;
+        y = initialY;
     }
 }

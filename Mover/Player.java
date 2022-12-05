@@ -101,4 +101,8 @@ class Player extends Mover {
         }
         return false;
     }
+
+    public void eatPellet() {
+        pelletsEaten++;
+    }
 }

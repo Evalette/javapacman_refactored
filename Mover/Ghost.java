@@ -5,6 +5,7 @@ class Ghost extends Mover {
 
     /* The pellet the ghost was last on top of */
     int lastPelletX, lastPelletY;
+
     final Image looksLeft;
     final Image looksRight;
 

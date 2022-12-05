@@ -23,8 +23,8 @@ public class Board extends JPanel {
     int dying = 0;
 
     /* Score information */
-    int currScore;
-    int highScore;
+    Score currScore = new Score();
+    Score highScore = new Score();
 
     /* if the high scores have been cleared, we have to update the top of the screen to reflect that */
     boolean clearHighScores = false;
@@ -61,9 +61,8 @@ public class Board extends JPanel {
 
     /* Constructor initializes state flags etc.*/
     public Board(int New) {
-        initHighScores();
         sounds = new GameSounds();
-        currScore = 0;
+        highScore.initScoreFromFile();
         stopped = false;
         max = 400;
         gridSize = 20;
@@ -84,41 +83,16 @@ public class Board extends JPanel {
         ghosts.add(ghost4);
     }
 
-    /* Reads the high scores file and saves it */
-    public void initHighScores() {
-        File file = new File("highScores.txt");
-        Scanner sc;
-        try {
-            sc = new Scanner(file);
-            highScore = sc.nextInt();
-            sc.close();
-        } catch (Exception ignored) {
-        }
-    }
-
     /* Writes the new high score to a file and sets flag to update it on screen */
-    public void updateScore(int score) {
-        PrintWriter out;
-        try {
-            out = new PrintWriter("highScores.txt");
-            out.println(score);
-            out.close();
-        } catch (Exception ignored) {
-        }
-        highScore = score;
+    public void updateScore(Score score) {
+        score.updateScore();
+        highScore.initScoreFromFile();
         clearHighScores = true;
     }
 
     /* Wipes the high scores file and sets flag to update it on screen */
     public void clearHighScores() {
-        PrintWriter out;
-        try {
-            out = new PrintWriter("highScores.txt");
-            out.println("0");
-            out.close();
-        } catch (Exception ignored) {
-        }
-        highScore = 0;
+        highScore.clear();
         clearHighScores = true;
     }
 
@@ -146,7 +120,6 @@ public class Board extends JPanel {
         pellets[8][8] = false;
         pellets[9][8] = false;
         pellets[10][8] = false;
-
     }
 
 
@@ -312,7 +285,7 @@ public class Board extends JPanel {
                             numLives = 2;
                         else {
                             /* Game over for player.  If relevant, update high score.  Set gameOver flag*/
-                            if (currScore > highScore) {
+                            if (currScore.biggerThan(highScore)) {
                                 updateScore(currScore);
                             }
                             overScreen.setActive(true);
@@ -359,9 +332,9 @@ public class Board extends JPanel {
             g.setFont(font);
             clearHighScores = false;
             if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
+                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore.getScore(), 20, 10);
             else
-                g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
+                g.drawString("Score: " + (currScore.getScore()) + "\t High Score: " + highScore.getScore(), 20, 10);
         }
 
         /* oops, is set to true when pacman has lost a life */
@@ -376,7 +349,7 @@ public class Board extends JPanel {
             ghosts.set(2, new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg"));
             ghosts.set(3, new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg"));
 
-            currScore = 0;
+            currScore = new Score();
             drawBoard(g);
             drawPellets(g);
             drawLives(g);
@@ -392,9 +365,9 @@ public class Board extends JPanel {
             g.setColor(Color.YELLOW);
             g.setFont(font);
             if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
+                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore.getScore(), 20, 10);
             else
-                g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
+                g.drawString("Score: " + (currScore.getScore()) + "\t High Score: " + highScore.getScore(), 20, 10);
             New++;
         }
         /* Second frame of new game */
@@ -458,36 +431,13 @@ public class Board extends JPanel {
 
         /* Eat pellets */
         if (pellets[player.pelletX][player.pelletY] && New != 2 && New != 3) {
-            lastPelletEatenX = player.pelletX;
-            lastPelletEatenY = player.pelletY;
-
-            /* Play eating sound */
-            sounds.nomNom();
-
-            /* Increment pellets eaten value to track for end game */
-            player.pelletsEaten++;
-
-            /* Delete the pellet*/
-            pellets[player.pelletX][player.pelletY] = false;
-
-            /* Increment the score */
-            currScore += 50;
-
-            /* Update the screen to reflect the new score */
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 20);
-            g.setColor(Color.YELLOW);
-            g.setFont(font);
-            if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore, 20, 10);
-            else
-                g.drawString("Score: " + (currScore) + "\t High Score: " + highScore, 20, 10);
+            eatPellets(g);
 
             /* If this was the last pellet */
             if (player.pelletsEaten == 173) {
                 /*Demo mode can't get a high score */
                 if (!demo) {
-                    if (currScore > highScore) {
+                    if (currScore.biggerThan(highScore)) {
                         updateScore(currScore);
                     }
                     winScreen.setActive(true);
@@ -530,6 +480,33 @@ public class Board extends JPanel {
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
 
+    }
+
+    private void eatPellets(Graphics g) {
+        lastPelletEatenX = player.pelletX;
+        lastPelletEatenY = player.pelletY;
+
+        /* Play eating sound */
+        sounds.nomNom();
+
+        /* Increment pellets eaten value to track for end game */
+        player.eatPellet();
+
+        /* Delete the pellet*/
+        pellets[player.pelletX][player.pelletY] = false;
+
+        /* Increment the score */
+        currScore.add(50);
+
+        /* Update the screen to reflect the new score */
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, 600, 20);
+        g.setColor(Color.YELLOW);
+        g.setFont(font);
+        if (demo)
+            g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore.getScore(), 20, 10);
+        else
+            g.drawString("Score: " + (currScore.getScore()) + "\t High Score: " + highScore.getScore(), 20, 10);
     }
 
     private void drawGhosts(Graphics g) {
@@ -579,16 +556,11 @@ public class Board extends JPanel {
         player.currDirection = new Left();
         player.direction = new Left();
         player.desiredDirection = new Left();
-        player.x = 200;
-        player.y = 300;
-        ghosts.get(0).x = 180;
-        ghosts.get(0).x = 180;
-        ghosts.get(1).x = 200;
-        ghosts.get(1).y = 180;
-        ghosts.get(2).x = 220;
-        ghosts.get(2).y = 180;
-        ghosts.get(3).x = 220;
-        ghosts.get(3).y = 180;
+        player.resetPosition();
+        for (Ghost ghost :
+                ghosts) {
+            ghost.resetPosition();
+        }
     }
 
     /* Also movePlayer the ghosts, and update the pellet states */
