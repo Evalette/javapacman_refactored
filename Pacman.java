@@ -7,7 +7,7 @@ import java.lang.*;
 
 /* This class contains the entire game... most of the game logic is in the Board class but this
    creates the gui and captures mouse and keyboard input, as well as controls the game states */
-public class Pacman implements MouseListener, KeyListener {
+public class Pacman {
 
     /* These timers are used to kill title, game over, and victory screens after a set idle period (5 seconds)*/
     long titleTimer = -1;
@@ -17,8 +17,94 @@ public class Pacman implements MouseListener, KeyListener {
     final Board b = new Board();
 
     /* This timer is used to do request new frames be drawn*/
-   final javax.swing.Timer frameTimer;
+    final javax.swing.Timer frameTimer;
 
+    MouseListener mouseListener = new MouseListener() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            if (b.titleScreen || b.winScreen || b.overScreen) {
+                /* If we aren't in the game where a menu is showing, ignore clicks */
+                return;
+            }
+
+            /* Get coordinates of click */
+            int x = e.getX();
+            int y = e.getY();
+            if (400 <= y && y <= 460) {
+                if (100 <= x && x <= 150) {
+                    /* New game has been clicked */
+                    b.New = 1;
+                } else if (180 <= x && x <= 300) {
+                    /* Clear high scores has been clicked */
+                    b.clearHighScores();
+                } else if (350 <= x && x <= 420) {
+                    /* Exit has been clicked */
+                    System.exit(0);
+                }
+            }
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    };
+    KeyListener keyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            /* Pressing a key in the title screen starts a game */
+            if (b.titleScreen) {
+                b.titleScreen = false;
+                return;
+            }
+            /* Pressing a key in the win screen or game over screen goes to the title screen */
+            else if (b.winScreen || b.overScreen) {
+                b.titleScreen = true;
+                b.winScreen = false;
+                b.overScreen = false;
+                return;
+            }
+            /* Pressing a key during a demo kills the demo mode and starts a new game */
+            else if (b.demo) {
+                b.demo = false;
+                /* Stop any pacman eating sounds */
+                b.sounds.nomNomStop();
+                b.New = 1;
+                return;
+            }
+
+            /* Otherwise, key presses control the player! */
+            int keyCode = e.getKeyCode();
+            b.player.desiredDirection = getDesiredDirection(keyCode);
+
+            repaint();
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
+        }
+    };
 
     /* This constructor creates the entire game essentially */
     public Pacman() {
@@ -32,8 +118,8 @@ public class Pacman implements MouseListener, KeyListener {
         f.add(b, BorderLayout.CENTER);
 
         /*Set listeners for mouse actions and button clicks*/
-        b.addMouseListener(this);
-        b.addKeyListener(this);
+        b.addMouseListener(mouseListener);
+        b.addKeyListener(keyListener);
 
         /* Make frame visible, disable resizing */
         f.setVisible(true);
@@ -65,8 +151,8 @@ public class Pacman implements MouseListener, KeyListener {
         b.repaint(0, 0, 600, 20);
         b.repaint(0, 420, 600, 40);
         b.repaint(b.player.x - 20, b.player.y - 20, 80, 80);
-        for (Ghost ghost:
-             b.ghosts) {
+        for (Ghost ghost :
+                b.ghosts) {
             b.repaint(ghost.x - 20, ghost.y - 20, 80, 80);
         }
     }
@@ -183,36 +269,6 @@ public class Pacman implements MouseListener, KeyListener {
         }
     }
 
-    /* Handles user key presses*/
-    public void keyPressed(KeyEvent e) {
-        /* Pressing a key in the title screen starts a game */
-        if (b.titleScreen) {
-            b.titleScreen = false;
-            return;
-        }
-        /* Pressing a key in the win screen or game over screen goes to the title screen */
-        else if (b.winScreen || b.overScreen) {
-            b.titleScreen = true;
-            b.winScreen = false;
-            b.overScreen = false;
-            return;
-        }
-        /* Pressing a key during a demo kills the demo mode and starts a new game */
-        else if (b.demo) {
-            b.demo = false;
-            /* Stop any pacman eating sounds */
-            b.sounds.nomNomStop();
-            b.New = 1;
-            return;
-        }
-
-        /* Otherwise, key presses control the player! */
-        int keyCode = e.getKeyCode();
-        b.player.desiredDirection = getDesiredDirection(keyCode);
-
-        repaint();
-    }
-
     private Direction getDesiredDirection(int keyCode) {
         if (keyCode == KeyEvent.VK_LEFT) {
             return new Left();
@@ -224,49 +280,6 @@ public class Pacman implements MouseListener, KeyListener {
             return new Down();
         }
         return null;
-    }
-
-    /* This function detects user clicks on the menu items at the bottom of the screen */
-    public void mousePressed(MouseEvent e) {
-        if (b.titleScreen || b.winScreen || b.overScreen) {
-            /* If we aren't in the game where a menu is showing, ignore clicks */
-            return;
-        }
-
-        /* Get coordinates of click */
-        int x = e.getX();
-        int y = e.getY();
-        if (400 <= y && y <= 460) {
-            if (100 <= x && x <= 150) {
-                /* New game has been clicked */
-                b.New = 1;
-            } else if (180 <= x && x <= 300) {
-                /* Clear high scores has been clicked */
-                b.clearHighScores();
-            } else if (350 <= x && x <= 420) {
-                /* Exit has been clicked */
-                System.exit(0);
-            }
-        }
-    }
-
-
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    public void mouseExited(MouseEvent e) {
-    }
-
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    public void keyReleased(KeyEvent e) {
-    }
-
-    public void keyTyped(KeyEvent e) {
     }
 
     /* Main function simply creates a new pacman instance*/
