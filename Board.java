@@ -11,25 +11,16 @@ import java.io.*;
 public class Board extends JPanel {
     /* Initialize the images*/
     /* For NOT JAR file*/
-    final Image pacmanImage = Toolkit.getDefaultToolkit().getImage("img/pacman.jpg");
-    final Image ghost10 = Toolkit.getDefaultToolkit().getImage("img/ghost10.jpg");
-    final Image ghost20 = Toolkit.getDefaultToolkit().getImage("img/ghost20.jpg");
-    final Image ghost30 = Toolkit.getDefaultToolkit().getImage("img/ghost30.jpg");
-    final Image ghost40 = Toolkit.getDefaultToolkit().getImage("img/ghost40.jpg");
-    final Image ghost11 = Toolkit.getDefaultToolkit().getImage("img/ghost11.jpg");
-    final Image ghost21 = Toolkit.getDefaultToolkit().getImage("img/ghost21.jpg");
-    final Image ghost31 = Toolkit.getDefaultToolkit().getImage("img/ghost31.jpg");
-    final Image ghost41 = Toolkit.getDefaultToolkit().getImage("img/ghost41.jpg");
     final Image titleScreenImage = Toolkit.getDefaultToolkit().getImage("img/titleScreen.jpg");
     final Image gameOverImage = Toolkit.getDefaultToolkit().getImage("img/gameOver.jpg");
     final Image winScreenImage = Toolkit.getDefaultToolkit().getImage("img/winScreen.jpg");
 
     /* Initialize the player and ghosts */
-    Player player = new Player(200, 300);
-    Ghost ghost1 = new Ghost(180, 180);
-    Ghost ghost2 = new Ghost(200, 180);
-    Ghost ghost3 = new Ghost(220, 180);
-    Ghost ghost4 = new Ghost(220, 180);
+    Player player = new Player(200, 300, "img/pacman.jpg");
+    Ghost ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
+    Ghost ghost2 = new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg");
+    Ghost ghost3 = new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg");
+    Ghost ghost4 = new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg");
 
     /* Timer is used for playing sound effects and animations */
     long timer = System.currentTimeMillis();
@@ -324,7 +315,7 @@ public class Board extends JPanel {
             sounds.nomNomStop();
 
             /* Draw the pacman */
-            g.drawImage(pacmanImage, player.x, player.y, Color.BLACK, null);
+            player.drawPacMan(g);
             g.setColor(Color.BLACK);
 
             /* Kill the pacman */
@@ -422,11 +413,12 @@ public class Board extends JPanel {
         /* Game initialization */
         if (New == 1) {
             reset();
-            player = new Player(200, 300);
-            ghost1 = new Ghost(180, 180);
-            ghost2 = new Ghost(200, 180);
-            ghost3 = new Ghost(220, 180);
-            ghost4 = new Ghost(220, 180);
+            player = new Player(200, 300, "img/pacman.jpg");
+            ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
+            ghost2 = new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg");
+            ghost3 = new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg");
+            ghost4 = new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg");
+
             currScore = 0;
             drawBoard(g);
             drawPellets(g);
@@ -586,11 +578,18 @@ public class Board extends JPanel {
         /*Draw the ghosts */
         if (ghost1.frameCount < 5) {
             /* Draw first frame of ghosts */
-            drawGhosts(g, ghost10, ghost20, ghost30, ghost40);
+            ghost1.drawLooksToTheRight(g);
+            ghost2.drawLooksToTheRight(g);
+            ghost3.drawLooksToTheRight(g);
+            ghost4.drawLooksToTheRight(g);
             ghost1.frameCount++;
         } else {
             /* Draw second frame of ghosts */
-            drawGhosts(g, ghost11, ghost21, ghost31, ghost41);
+            ghost1.drawLooksToTheLeft(g);
+            ghost2.drawLooksToTheLeft(g);
+            ghost3.drawLooksToTheLeft(g);
+            ghost4.drawLooksToTheLeft(g);
+
             if (ghost1.frameCount >= 10)
                 ghost1.frameCount = 0;
             else
@@ -600,7 +599,7 @@ public class Board extends JPanel {
         /* Draw the pacman */
         if (player.frameCount < 5) {
             /* Draw mouth closed */
-            g.drawImage(pacmanImage, player.x, player.y, Color.BLACK, null);
+            player.drawPacMan(g);
         } else {
             /* Draw mouth open in appropriate direction */
             if (player.frameCount >= 10)
@@ -613,12 +612,5 @@ public class Board extends JPanel {
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
 
-    }
-
-    private void drawGhosts(Graphics g, Image ghost10, Image ghost20, Image ghost30, Image ghost40) {
-        g.drawImage(ghost10, ghost1.x, ghost1.y, Color.BLACK, null);
-        g.drawImage(ghost20, ghost2.x, ghost2.y, Color.BLACK, null);
-        g.drawImage(ghost30, ghost3.x, ghost3.y, Color.BLACK, null);
-        g.drawImage(ghost40, ghost4.x, ghost4.y, Color.BLACK, null);
     }
 }

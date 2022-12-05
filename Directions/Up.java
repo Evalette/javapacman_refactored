@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Up implements Direction{
+public class Up implements Direction {
 
     final Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage("img/pacmanup.jpg");
 

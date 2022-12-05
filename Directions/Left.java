@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Left implements Direction{
+public class Left implements Direction {
 
     final Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage("img/pacmanleft.jpg");
 
@@ -32,7 +32,7 @@ public class Left implements Direction{
     @Override
     public void moveIfValid(Mover mover) {
         if (mover.direction.isValidDest(mover.x - mover.increment, mover.y, mover))
-        mover.x -= mover.increment;
+            mover.x -= mover.increment;
     }
 
 

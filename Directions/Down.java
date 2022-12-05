@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Down implements Direction{
+public class Down implements Direction {
 
     final Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage("img/pacmandown.jpg");
 

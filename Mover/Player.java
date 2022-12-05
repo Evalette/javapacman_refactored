@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /* This is the pacman object */
 class Player extends Mover {
     /* Direction is used in demoMode, currDirection and desiredDirection are used in non demoMode*/
@@ -14,13 +16,16 @@ class Player extends Mover {
     boolean stopped = false;
 
     /* Constructor places pacman in initial location and orientation */
-    public Player(int x, int y) {
+
+    final Image pacmanImage;
+    public Player(int x, int y, String pacManImage) {
         super(x, y);
 
         teleport = false;
         pelletsEaten = 0;
         currDirection = new Left();
         desiredDirection = new Left();
+        pacmanImage = Toolkit.getDefaultToolkit().getImage("img/pacman.jpg");
     }
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
@@ -76,5 +81,9 @@ class Player extends Mover {
             pelletX = x / gridSize - 1;
             pelletY = y / gridSize - 1;
         }
+    }
+
+    public void drawPacMan(Graphics g){
+        g.drawImage(pacmanImage, x, y, Color.BLACK, null);
     }
 }

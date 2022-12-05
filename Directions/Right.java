@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Right implements Direction{
+public class Right implements Direction {
 
     final Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage("img/pacmanright.jpg");
 

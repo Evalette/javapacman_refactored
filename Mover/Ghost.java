@@ -1,14 +1,20 @@
+import java.awt.*;
+
 /* Ghost class controls the ghost. */
 class Ghost extends Mover {
 
     /* The pellet the ghost was last on top of */
     int lastPelletX, lastPelletY;
+    final Image looksLeft;
+    final Image looksRight;
 
     /*Constructor places ghost and updates states*/
-    public Ghost(int x, int y) {
+    public Ghost(int x, int y, String leftImagePath, String rightImagePath) {
         super(x, y);
         lastPelletX = pelletX;
         lastPelletY = pelletY;
+        looksLeft = Toolkit.getDefaultToolkit().getImage(leftImagePath);
+        looksRight = Toolkit.getDefaultToolkit().getImage(rightImagePath);
     }
 
     /* update pellet status */
@@ -39,4 +45,11 @@ class Ghost extends Mover {
         direction.moveIfValid(this);
     }
 
+    public void drawLooksToTheRight(Graphics g) {
+        g.drawImage(looksRight, x, y, Color.BLACK, null);
+    }
+
+    public void drawLooksToTheLeft(Graphics g) {
+        g.drawImage(looksLeft, x, y, Color.BLACK, null);
+    }
 }
