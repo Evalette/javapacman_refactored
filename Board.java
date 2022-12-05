@@ -426,8 +426,6 @@ public class Board extends JPanel {
             ghost.copyArea(g);
         }
 
-
-
         /* Detect collisions */
         if (player.collidesWith(ghosts)) {
             oops = true;
@@ -514,26 +512,7 @@ public class Board extends JPanel {
                 ghost.fillPellet(g);
         }
 
-        /*Draw the ghosts */
-        if (ghosts.get(0).frameCount < 5) {
-            /* Draw first frame of ghosts */
-            for (Ghost ghost :
-                    ghosts) {
-                ghost.drawLooksToTheRight(g);
-            }
-            ghosts.get(0).frameCount++;
-        } else {
-            /* Draw second frame of ghosts */
-            for (Ghost ghost :
-                    ghosts) {
-                ghost.drawLooksToTheLeft(g);
-            }
-
-            if (ghosts.get(0).frameCount >= 10)
-                ghosts.get(0).frameCount = 0;
-            else
-                ghosts.get(0).frameCount++;
-        }
+        drawGhosts(g);
 
         /* Draw the pacman */
         if (player.frameCount < 5) {
@@ -551,6 +530,31 @@ public class Board extends JPanel {
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
 
+    }
+
+    private void drawGhosts(Graphics g) {
+
+        /*Draw the ghosts */
+        Ghost ghost1 = ghosts.get(0);
+        if (ghost1.frameCount < 5) {
+            /* Draw first frame of ghosts */
+            for (Ghost ghost :
+                    ghosts) {
+                ghost.drawLooksToTheRight(g);
+            }
+            ghost1.frameCount++;
+        } else {
+            /* Draw second frame of ghosts */
+            for (Ghost ghost :
+                    ghosts) {
+                ghost.drawLooksToTheLeft(g);
+            }
+
+            if (ghost1.frameCount >= 10)
+                ghost1.frameCount = 0;
+            else
+                ghost1.frameCount++;
+        }
     }
 
     /* This repaintChangedArea function repaints only the parts of the screen that may have changed.
