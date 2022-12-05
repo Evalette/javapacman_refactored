@@ -174,28 +174,28 @@ abstract class Mover {
         return lastX;
     }
 
-    public void setLastX(int lastX) {
-        this.lastX = lastX;
-    }
-
     public int getLastY() {
         return lastY;
-    }
-
-    public void setLastY(int lastY) {
-        this.lastY = lastY;
     }
 
     public int getPelletX() {
         return pelletX;
     }
 
-    public void setPelletX(int pelletX) {
-        this.pelletX = pelletX;
-    }
-
     public int getPelletY() {
         return pelletY;
+    }
+
+    public void setLastX(int lastX) {
+        this.lastX = lastX;
+    }
+
+    public void setLastY(int lastY) {
+        this.lastY = lastY;
+    }
+
+    public void setPelletX(int pelletX) {
+        this.pelletX = pelletX;
     }
 
     public void setPelletY(int pelletY) {

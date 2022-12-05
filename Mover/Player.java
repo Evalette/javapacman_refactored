@@ -31,8 +31,8 @@ class Player extends Mover {
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
     public void demoMove() {
-        setLastX(getX());
-        setLastY(getY());
+        this.setLastX(getX());
+        this.setLastY(getY());
         if (isChoiceDest()) {
             setDirection(newDirection());
         }
@@ -44,8 +44,8 @@ class Player extends Mover {
     /* The movePlayer function moves the pacman for one frame in non demo mode */
     public void move() {
         int gridSize = 20;
-        setLastX(getX());
-        setLastY(getY());
+        this.setLastX(getX());
+        this.setLastY(getY());
 
         /* Try to turn in the direction input by the user */
         /*Can only turn if we're in center of a grid*/
@@ -79,8 +79,8 @@ class Player extends Mover {
     /* Update what pellet the pacman is on top of */
     public void updatePellet() {
         if (super.isChoiceDest()) {
-            setPelletX(getX() / getGridSize() - 1);
-            setPelletY(getY() / getGridSize() - 1);
+            this.setPelletX(getX() / getGridSize() - 1);
+            this.setPelletY(getY() / getGridSize() - 1);
         }
     }
 

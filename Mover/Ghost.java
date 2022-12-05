@@ -27,16 +27,16 @@ class Ghost extends Mover {
         if (tempX != getPelletX() || tempY != getPelletY()) {
             lastPelletX = getPelletX();
             lastPelletY = getPelletY();
-            setPelletX(tempX);
-            setPelletY(tempY);
+            this.setPelletX(tempX);
+            this.setPelletY(tempY);
         }
 
     }
 
     /* Random movePlayer function for ghost */
     public void move() {
-        setLastX(getX());
-        setLastY(getY());
+        this.setLastX(getX());
+        this.setLastY(getY());
 
         /* If we can make a decision, pick a new direction randomly */
         if (isChoiceDest()) {

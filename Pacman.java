@@ -202,7 +202,7 @@ public class Pacman {
         if (!New) {
       /* The pacman player has two functions, demoMove if we're in demo mode and movePlayer if we're in
          user playable mode.  Call the appropriate one here */
-            b.choseMoveFunction();
+            b.movePlayerAccordingToMode();
             b.moveGhostAndUpdatePellet();
         }
 

@@ -72,14 +72,10 @@ public class Board extends JPanel {
         winScreen = new Screen("img/winScreen.jpg", false);
 
         player = new Player(200, 300, "img/pacman.jpg");
-        Ghost ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
-        Ghost ghost2 = new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg");
-        Ghost ghost3 = new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg");
-        Ghost ghost4 = new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg");
-        ghosts.add(ghost1);
-        ghosts.add(ghost2);
-        ghosts.add(ghost3);
-        ghosts.add(ghost4);
+        ghosts.add(new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg"));
+        ghosts.add(new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg"));
+        ghosts.add(new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg"));
+        ghosts.add(new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg"));
     }
 
     /* Writes the new high score to a file and sets flag to update it on screen */
@@ -572,14 +568,6 @@ public class Board extends JPanel {
         player.updatePellet();
     }
 
-    void choseMoveFunction() {
-        if (demo) {
-            player.demoMove();
-        } else {
-            player.move();
-        }
-    }
-
     void gotToTitleScreen() {
         winScreen.setActive(false);
         overScreen.setActive(false);
@@ -634,8 +622,11 @@ public class Board extends JPanel {
         return sounds;
     }
 
-    @Override
-    public Font getFont() {
-        return font;
+    void movePlayerAccordingToMode() {
+        if (demo) {
+            player.demoMove();
+        } else {
+            player.move();
+        }
     }
 }
