@@ -14,7 +14,7 @@ public class Pacman {
     long timer = -1;
 
     /* Create a new board */
-    final Board b = new Board();
+    final Board b;
 
     /* This timer is used to do request new frames be drawn*/
     final javax.swing.Timer frameTimer;
@@ -97,7 +97,7 @@ public class Pacman {
             int keyCode = e.getKeyCode();
             b.player.desiredDirection = getDesiredDirection(keyCode);
 
-            repaint();
+            b.repaintChangedArea();
         }
 
         @Override
@@ -108,6 +108,9 @@ public class Pacman {
 
     /* This constructor creates the entire game essentially */
     public Pacman() {
+
+        /* Set the New flag to 1 because this is a new game */
+        b = new Board(1);
         b.requestFocus();
 
         /* Create and set up window frame*/
@@ -125,9 +128,6 @@ public class Pacman {
         f.setVisible(true);
         f.setResizable(false);
 
-        /* Set the New flag to 1 because this is a new game */
-        b.New = 1;
-
         /* Manually call the first frameStep to initialize the game. */
         stepFrame(true);
 
@@ -138,23 +138,6 @@ public class Pacman {
         frameTimer.start();
 
         b.requestFocus();
-    }
-
-    /* This repaint function repaints only the parts of the screen that may have changed.
-       Namely, the area around every player ghost and the menu bars
-    */
-    public void repaint() {
-        if (b.player.teleport) {
-            b.repaint(b.player.lastX - 20, b.player.lastY - 20, 80, 80);
-            b.player.teleport = false;
-        }
-        b.repaint(0, 0, 600, 20);
-        b.repaint(0, 420, 600, 40);
-        b.repaint(b.player.x - 20, b.player.y - 20, 80, 80);
-        for (Ghost ghost :
-                b.ghosts) {
-            b.repaint(ghost.x - 20, ghost.y - 20, 80, 80);
-        }
     }
 
     /* Steps the screen forward one frame */
@@ -265,7 +248,7 @@ public class Pacman {
         }
         /* Otherwise we're in a normal state, advance one frame*/
         else {
-            repaint();
+            b.repaintChangedArea();
         }
     }
 

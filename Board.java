@@ -62,14 +62,14 @@ public class Board extends JPanel {
     final Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
-    public Board() {
+    public Board(int New) {
         initHighScores();
         sounds = new GameSounds();
         currScore = 0;
         stopped = false;
         max = 400;
         gridSize = 20;
-        New = 0;
+        this.New = New;
         titleScreen = true;
 
         player = new Player(200, 300, "img/pacman.jpg");
@@ -556,5 +556,22 @@ public class Board extends JPanel {
         g.setColor(Color.WHITE);
         g.drawRect(19, 19, 382, 382);
 
+    }
+
+    /* This repaintChangedArea function repaints only the parts of the screen that may have changed.
+           Namely, the area around every player ghost and the menu bars
+        */
+    public void repaintChangedArea() {
+        if (player.teleport) {
+            repaint(player.lastX - 20, player.lastY - 20, 80, 80);
+            player.teleport = false;
+        }
+        repaint(0, 0, 600, 20);
+        repaint(0, 420, 600, 40);
+        repaint(player.x - 20, player.y - 20, 80, 80);
+        for (Ghost ghost :
+                ghosts) {
+            repaint(ghost.x - 20, ghost.y - 20, 80, 80);
+        }
     }
 }
