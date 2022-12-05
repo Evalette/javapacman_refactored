@@ -357,12 +357,7 @@ public class Board extends JPanel {
             }
 
             /* Draw the top menu bar*/
-            g.setColor(Color.YELLOW);
-            g.setFont(font);
-            if (demo)
-                g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore.getScore(), 20, 10);
-            else
-                g.drawString("Score: " + (currScore.getScore()) + "\t High Score: " + highScore.getScore(), 20, 10);
+            drawTopMenuBar(g);
             New++;
         }
         /* Second frame of new game */
@@ -477,6 +472,15 @@ public class Board extends JPanel {
 
     }
 
+    private void drawTopMenuBar(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.setFont(font);
+        if (demo)
+            g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore.getScore(), 20, 10);
+        else
+            g.drawString("Score: " + (currScore.getScore()) + "\t High Score: " + highScore.getScore(), 20, 10);
+    }
+
     private void eatPellets(Graphics g) {
         lastPelletEatenX = player.getPelletX();
         lastPelletEatenY = player.getPelletY();
@@ -496,12 +500,7 @@ public class Board extends JPanel {
         /* Update the screen to reflect the new score */
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 600, 20);
-        g.setColor(Color.YELLOW);
-        g.setFont(font);
-        if (demo)
-            g.drawString("DEMO MODE PRESS ANY KEY TO START A GAME\t High Score: " + highScore.getScore(), 20, 10);
-        else
-            g.drawString("Score: " + (currScore.getScore()) + "\t High Score: " + highScore.getScore(), 20, 10);
+        drawTopMenuBar(g);
     }
 
     private void drawGhosts(Graphics g) {
