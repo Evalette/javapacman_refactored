@@ -9,9 +9,6 @@ import java.io.*;
 public class Board extends JPanel {
     /* Initialize the images*/
     /* For NOT JAR file*/
-    final Image titleScreenImage = Toolkit.getDefaultToolkit().getImage("img/titleScreen.jpg");
-    final Image gameOverImage = Toolkit.getDefaultToolkit().getImage("img/gameOver.jpg");
-    final Image winScreenImage = Toolkit.getDefaultToolkit().getImage("img/winScreen.jpg");
 
     /* Initialize the player and ghosts */
     Player player;
@@ -46,9 +43,10 @@ public class Board extends JPanel {
 
     /* State flags*/
     boolean stopped;
-    boolean titleScreen;
-    boolean winScreen = false;
-    boolean overScreen = false;
+
+    Screen titleScreen;
+    Screen winScreen;
+    Screen overScreen;
     boolean demo = false;
     int New;
 
@@ -70,7 +68,10 @@ public class Board extends JPanel {
         max = 400;
         gridSize = 20;
         this.New = New;
-        titleScreen = true;
+
+        titleScreen = new Screen("img/titleScreen.jpg", true);
+        overScreen = new Screen("img/gameOver.jpg", false);
+        winScreen = new Screen("img/winScreen.jpg", false);
 
         player = new Player(200, 300, "img/pacman.jpg");
         Ghost ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
@@ -314,7 +315,7 @@ public class Board extends JPanel {
                             if (currScore > highScore) {
                                 updateScore(currScore);
                             }
-                            overScreen = true;
+                            overScreen.setActive(true);
                         }
                     }
                 }
@@ -323,10 +324,8 @@ public class Board extends JPanel {
         }
 
         /* If this is the title screen, draw the title screen and return */
-        if (titleScreen) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 600);
-            g.drawImage(titleScreenImage, 0, 0, Color.BLACK, null);
+        if (titleScreen.isActive()) {
+            titleScreen.drawImage(g);
 
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
@@ -335,10 +334,8 @@ public class Board extends JPanel {
         }
 
         /* If this is the win screen, draw the win screen and return */
-        else if (winScreen) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 600);
-            g.drawImage(winScreenImage, 0, 0, Color.BLACK, null);
+        else if (winScreen.isActive()) {
+            winScreen.drawImage(g);
             New = 1;
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
@@ -346,10 +343,8 @@ public class Board extends JPanel {
         }
 
         /* If this is the game over screen, draw the game over screen and return */
-        else if (overScreen) {
-            g.setColor(Color.BLACK);
-            g.fillRect(0, 0, 600, 600);
-            g.drawImage(gameOverImage, 0, 0, Color.BLACK, null);
+        else if (overScreen.isActive()) {
+            overScreen.drawImage(g);
             New = 1;
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
@@ -497,9 +492,9 @@ public class Board extends JPanel {
                     if (currScore > highScore) {
                         updateScore(currScore);
                     }
-                    winScreen = true;
+                    winScreen.setActive(true);
                 } else {
-                    titleScreen = true;
+                    titleScreen.setActive(true);
                 }
                 return;
             }
@@ -611,8 +606,8 @@ public class Board extends JPanel {
     }
 
     void gotToTitleScreen() {
-        winScreen = false;
-        overScreen = false;
-        titleScreen = true;
+        winScreen.setActive(false);
+        overScreen.setActive(false);
+        titleScreen.setActive(true);
     }
 }

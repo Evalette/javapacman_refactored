@@ -27,7 +27,7 @@ public class Pacman {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            if (b.titleScreen || b.winScreen || b.overScreen) {
+            if (b.titleScreen.isActive() || b.winScreen.isActive() || b.overScreen.isActive()) {
                 /* If we aren't in the game where a menu is showing, ignore clicks */
                 return;
             }
@@ -73,15 +73,13 @@ public class Pacman {
         @Override
         public void keyPressed(KeyEvent e) {
             /* Pressing a key in the title screen starts a game */
-            if (b.titleScreen) {
-                b.titleScreen = false;
+            if (b.titleScreen.isActive()) {
+                b.titleScreen.setActive(false);
                 return;
             }
             /* Pressing a key in the win screen or game over screen goes to the title screen */
-            else if (b.winScreen || b.overScreen) {
-                b.titleScreen = true;
-                b.winScreen = false;
-                b.overScreen = false;
+            else if (b.winScreen.isActive() || b.overScreen.isActive()) {
+                b.gotToTitleScreen();
                 return;
             }
             /* Pressing a key during a demo kills the demo mode and starts a new game */
@@ -143,7 +141,7 @@ public class Pacman {
     /* Steps the screen forward one frame */
     public void stepFrame(boolean New) {
         /* If we aren't on a special screen than the timers can be set to -1 to disable them */
-        if (!b.titleScreen && !b.winScreen && !b.overScreen) {
+        if (!b.titleScreen.isActive() && !b.winScreen.isActive() && !b.overScreen.isActive()) {
             timer = -1;
             titleTimer = -1;
         }
@@ -160,14 +158,14 @@ public class Pacman {
 
     /* If this is the title screen, make sure to only stay on the title screen for 5 seconds.
        If after 5 seconds the user hasn't started a game, start up demo mode */
-        if (b.titleScreen) {
+        if (b.titleScreen.isActive()) {
             if (titleTimer == -1) {
                 titleTimer = System.currentTimeMillis();
             }
 
             long currTime = System.currentTimeMillis();
             if (currTime - titleTimer >= 5000) {
-                b.titleScreen = false;
+                b.titleScreen.setActive(false);
                 b.demo = true;
                 titleTimer = -1;
             }
@@ -177,7 +175,7 @@ public class Pacman {
  
     /* If this is the win screen or game over screen, make sure to only stay on the screen for 5 seconds.
        If after 5 seconds the user hasn't pressed a key, go to title screen */
-        else if (b.winScreen || b.overScreen) {
+        else if (b.winScreen.isActive() || b.overScreen.isActive()) {
             if (timer == -1) {
                 timer = System.currentTimeMillis();
             }
