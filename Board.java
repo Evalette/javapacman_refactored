@@ -591,4 +591,22 @@ public class Board extends JPanel {
         ghosts.get(3).x = 220;
         ghosts.get(3).y = 180;
     }
+
+    /* Also movePlayer the ghosts, and update the pellet states */
+    void moveGhostAndUpdatePellet() {
+        for (Ghost ghost :
+                ghosts) {
+            ghost.move();
+            ghost.updatePellet();
+        }
+        player.updatePellet();
+    }
+
+    void choseMoveFunction() {
+        if (demo) {
+            player.demoMove();
+        } else {
+            player.move();
+        }
+    }
 }

@@ -198,19 +198,8 @@ public class Pacman {
         if (!New) {
       /* The pacman player has two functions, demoMove if we're in demo mode and movePlayer if we're in
          user playable mode.  Call the appropriate one here */
-            if (b.demo) {
-                b.player.demoMove();
-            } else {
-                b.player.move();
-            }
-
-            /* Also movePlayer the ghosts, and update the pellet states */
-            for (Ghost ghost :
-                    b.ghosts) {
-                ghost.move();
-                ghost.updatePellet();
-            }
-            b.player.updatePellet();
+            b.choseMoveFunction();
+            b.moveGhostAndUpdatePellet();
         }
 
         /* We either have a new game or the user has died, either way we have to resetBoard the board */
