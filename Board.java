@@ -3,7 +3,6 @@
 import java.awt.*;
 import javax.swing.JPanel;
 import java.util.*;
-import java.io.*;
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
@@ -11,53 +10,53 @@ public class Board extends JPanel {
     /* For NOT JAR file*/
 
     /* Initialize the player and ghosts */
-    Player player;
+    private Player player;
 
-    LinkedList<Ghost> ghosts = new LinkedList<>();
+    private final LinkedList<Ghost> ghosts = new LinkedList<>();
 
     /* Timer is used for playing sound effects and animations */
-    long timer = System.currentTimeMillis();
+    private long timer = System.currentTimeMillis();
 
     /* Dying is used to count frames in the dying animation.  If it's non-zero,
        pacman is in the process of dying */
-    int dying = 0;
+    private int dying = 0;
 
     /* Score information */
-    Score currScore = new Score();
-    Score highScore = new Score();
+    private Score currScore = new Score();
+    private final Score highScore = new Score();
 
     /* if the high scores have been cleared, we have to update the top of the screen to reflect that */
-    boolean clearHighScores = false;
+    private boolean clearHighScores = false;
 
-    int numLives = 2;
+    private int numLives = 2;
 
     /*Contains the game map, passed to player and ghosts */
-    boolean[][] state;
+    private boolean[][] state;
 
     /* Contains the state of all pellets*/
-    boolean[][] pellets;
+    private boolean[][] pellets;
 
     /* Game dimensions */
-    final int gridSize;
-    final int max;
+    private final int gridSize;
+    private final int max;
 
     /* State flags*/
-    boolean stopped;
+    private boolean stopped;
 
-    Screen titleScreen;
-    Screen winScreen;
-    Screen overScreen;
-    boolean demo = false;
-    int New;
+    private final Screen titleScreen;
+    private final Screen winScreen;
+    private final Screen overScreen;
+    private boolean demo = false;
+    private int New;
 
     /* Used to call sound effects */
-    final GameSounds sounds;
+    private final GameSounds sounds;
 
-    int lastPelletEatenX = 0;
-    int lastPelletEatenY = 0;
+    private int lastPelletEatenX = 0;
+    private int lastPelletEatenY = 0;
 
     /* This is the font used for the menus */
-    final Font font = new Font("Monospaced", Font.BOLD, 12);
+    private final Font font = new Font("Monospaced", Font.BOLD, 12);
 
     /* Constructor initializes state flags etc.*/
     public Board(int New) {
@@ -228,9 +227,9 @@ public class Board extends JPanel {
         drawLives(g);
     }
 
-    private void fillRectAndUpdateMap(Graphics g, int x, int x1, int width, int height) {
-        g.fillRect(x, x1, width, height);
-        updateMap(x, x1, width, height);
+    private void fillRectAndUpdateMap(Graphics g, int x, int y, int width, int height) {
+        g.fillRect(x, y, width, height);
+        updateMap(x, y, width, height);
     }
 
 
@@ -356,7 +355,7 @@ public class Board extends JPanel {
             /* Send the game map to player and all ghosts */
             player.updateState(state);
             /* Don't let the player go in the ghost box*/
-            player.state[9][7] = false;
+            player.getState()[9][7] = false;
             for (Ghost ghost : ghosts) {
                 ghost.updateState(state);
             }
@@ -430,11 +429,11 @@ public class Board extends JPanel {
         }
 
         /* Eat pellets */
-        if (pellets[player.pelletX][player.pelletY] && New != 2 && New != 3) {
+        if (pellets[player.getPelletX()][player.getPelletY()] && New != 2 && New != 3) {
             eatPellets(g);
 
             /* If this was the last pellet */
-            if (player.pelletsEaten == 173) {
+            if (player.getPelletsEaten() == 173) {
                 /*Demo mode can't get a high score */
                 if (!demo) {
                     if (currScore.biggerThan(highScore)) {
@@ -449,7 +448,7 @@ public class Board extends JPanel {
         }
 
         /* If we moved to a location without pellets, stop the sounds */
-        else if ((player.pelletX != lastPelletEatenX || player.pelletY != lastPelletEatenY) || player.stopped) {
+        else if ((player.getPelletX() != lastPelletEatenX || player.getPelletY() != lastPelletEatenY) || player.isStopped()) {
             /* Stop any pacman eating sounds */
             sounds.nomNomStop();
         }
@@ -458,22 +457,22 @@ public class Board extends JPanel {
         /* Replace pellets that have been run over by ghosts */
         for (Ghost ghost :
                 ghosts) {
-            if (pellets[ghost.lastPelletX][ghost.lastPelletY])
+            if (pellets[ghost.getLastPelletX()][ghost.getLastPelletY()])
                 ghost.fillPellet(g);
         }
 
         drawGhosts(g);
 
         /* Draw the pacman */
-        if (player.frameCount < 5) {
+        if (player.getFrameCount() < 5) {
             /* Draw mouth closed */
             player.drawPacMan(g);
         } else {
             /* Draw mouth open in appropriate direction */
-            if (player.frameCount >= 10)
-                player.frameCount = 0;
+            if (player.getFrameCount() >= 10)
+                player.setFrameCount(0);
 
-            player.currDirection.drawImage(g, player);
+            player.getCurrDirection().drawImage(g, player);
         }
 
         /* Draw the border around the game in case it was overwritten by ghost movement or something */
@@ -483,8 +482,8 @@ public class Board extends JPanel {
     }
 
     private void eatPellets(Graphics g) {
-        lastPelletEatenX = player.pelletX;
-        lastPelletEatenY = player.pelletY;
+        lastPelletEatenX = player.getPelletX();
+        lastPelletEatenY = player.getPelletY();
 
         /* Play eating sound */
         sounds.nomNom();
@@ -493,7 +492,7 @@ public class Board extends JPanel {
         player.eatPellet();
 
         /* Delete the pellet*/
-        pellets[player.pelletX][player.pelletY] = false;
+        pellets[player.getPelletX()][player.getPelletY()] = false;
 
         /* Increment the score */
         currScore.add(50);
@@ -513,13 +512,13 @@ public class Board extends JPanel {
 
         /*Draw the ghosts */
         Ghost ghost1 = ghosts.get(0);
-        if (ghost1.frameCount < 5) {
+        if (ghost1.getFrameCount() < 5) {
             /* Draw first frame of ghosts */
             for (Ghost ghost :
                     ghosts) {
                 ghost.drawLooksToTheRight(g);
             }
-            ghost1.frameCount++;
+            ghost1.setFrameCount(ghost1.getFrameCount() + 1);
         } else {
             /* Draw second frame of ghosts */
             for (Ghost ghost :
@@ -527,10 +526,10 @@ public class Board extends JPanel {
                 ghost.drawLooksToTheLeft(g);
             }
 
-            if (ghost1.frameCount >= 10)
-                ghost1.frameCount = 0;
+            if (ghost1.getFrameCount() >= 10)
+                ghost1.setFrameCount(0);
             else
-                ghost1.frameCount++;
+                ghost1.setFrameCount(ghost1.getFrameCount() + 1);
         }
     }
 
@@ -538,24 +537,24 @@ public class Board extends JPanel {
            Namely, the area around every player ghost and the menu bars
         */
     public void repaintChangedArea() {
-        if (player.teleport) {
-            repaint(player.lastX - 20, player.lastY - 20, 80, 80);
-            player.teleport = false;
+        if (player.isTeleport()) {
+            repaint(player.getLastX() - 20, player.getLastY() - 20, 80, 80);
+            player.setTeleport(false);
         }
         repaint(0, 0, 600, 20);
         repaint(0, 420, 600, 40);
-        repaint(player.x - 20, player.y - 20, 80, 80);
+        repaint(player.getX() - 20, player.getY() - 20, 80, 80);
         for (Ghost ghost :
                 ghosts) {
-            repaint(ghost.x - 20, ghost.y - 20, 80, 80);
+            repaint(ghost.getX() - 20, ghost.getY() - 20, 80, 80);
         }
     }
 
     void resetStartingPositionsAndOrientations() {
         /* Move all game elements back to starting positions and orientations */
-        player.currDirection = new Left();
-        player.direction = new Left();
-        player.desiredDirection = new Left();
+        player.setCurrDirection(new Left());
+        player.setDirection(new Left());
+        player.setDesiredDirection(new Left());
         player.resetPosition();
         for (Ghost ghost :
                 ghosts) {
@@ -585,5 +584,58 @@ public class Board extends JPanel {
         winScreen.setActive(false);
         overScreen.setActive(false);
         titleScreen.setActive(true);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getDying() {
+        return dying;
+    }
+
+    public boolean isStopped() {
+        return stopped;
+    }
+
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
+    }
+
+    public Screen getTitleScreen() {
+        return titleScreen;
+    }
+
+    public Screen getWinScreen() {
+        return winScreen;
+    }
+
+    public Screen getOverScreen() {
+        return overScreen;
+    }
+
+    public boolean isDemo() {
+        return demo;
+    }
+
+    public void setDemo(boolean demo) {
+        this.demo = demo;
+    }
+
+    public int getNew() {
+        return New;
+    }
+
+    public void setNew(int aNew) {
+        New = aNew;
+    }
+
+    public GameSounds getSounds() {
+        return sounds;
+    }
+
+    @Override
+    public Font getFont() {
+        return font;
     }
 }

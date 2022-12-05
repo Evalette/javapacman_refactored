@@ -2,11 +2,11 @@ import java.awt.*;
 
 public class Down implements Direction {
 
-    final Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage("img/pacmandown.jpg");
+    private final Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage("img/pacmandown.jpg");
 
     @Override
     public void drawImage(Graphics g, Player player) {
-        g.drawImage(pacmanDownImage, player.x, player.y, Color.BLACK, null);
+        g.drawImage(pacmanDownImage, player.getX(), player.getY(), Color.BLACK, null);
     }
 
     @Override
@@ -16,8 +16,8 @@ public class Down implements Direction {
 
     @Override
     public void movePlayer(Player player, int gridSize) {
-        if (isValidDest(player.x, player.y + gridSize, player))
-            player.y += player.increment;
+        if (isValidDest(player.getX(), player.getY() + gridSize, player))
+            player.setY(player.getY() + player.getIncrement());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Down implements Direction {
 
     @Override
     public void moveIfValid(Mover mover) {
-        if (isValidDest(mover.x, mover.y + mover.gridSize, mover))
-            mover.y += mover.increment;
+        if (isValidDest(mover.getX(), mover.getY() + mover.getGridSize(), mover))
+            mover.setY(mover.getY() + mover.getIncrement());
     }
 }

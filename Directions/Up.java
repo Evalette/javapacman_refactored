@@ -2,11 +2,11 @@ import java.awt.*;
 
 public class Up implements Direction {
 
-    final Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage("img/pacmanup.jpg");
+    private final Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage("img/pacmanup.jpg");
 
     @Override
     public void drawImage(Graphics g, Player player) {
-        g.drawImage(pacmanUpImage, player.x, player.y, Color.BLACK, null);
+        g.drawImage(pacmanUpImage, player.getX(), player.getY(), Color.BLACK, null);
     }
 
     @Override
@@ -16,8 +16,8 @@ public class Up implements Direction {
 
     @Override
     public void movePlayer(Player player, int gridSize) {
-        if (isValidDest(player.x, player.y - player.increment, player))
-            player.y -= player.increment;
+        if (isValidDest(player.getX(), player.getY() - player.getIncrement(), player))
+            player.setY(player.getY() - player.getIncrement());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class Up implements Direction {
 
     @Override
     public void moveIfValid(Mover mover) {
-        if (mover.direction.isValidDest(mover.x, mover.y - mover.increment, mover))
-            mover.y -= mover.increment;
+        if (mover.getDirection().isValidDest(mover.getX(), mover.getY() - mover.getIncrement(), mover))
+            mover.setY(mover.getY() - mover.getIncrement());
     }
 }

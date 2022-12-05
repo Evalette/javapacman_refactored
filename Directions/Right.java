@@ -2,11 +2,11 @@ import java.awt.*;
 
 public class Right implements Direction {
 
-    final Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage("img/pacmanright.jpg");
+    private final Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage("img/pacmanright.jpg");
 
     @Override
     public void drawImage(Graphics g, Player player) {
-        g.drawImage(pacmanRightImage, player.x, player.y, Color.BLACK, null);
+        g.drawImage(pacmanRightImage, player.getX(), player.getY(), Color.BLACK, null);
     }
 
     @Override
@@ -16,11 +16,11 @@ public class Right implements Direction {
 
     @Override
     public void movePlayer(Player player, int gridSize) {
-        if (isValidDest(player.x + gridSize, player.y, player)) {
-            player.x += player.increment;
-        } else if (player.y == 9 * gridSize && player.x > player.max - gridSize * 2) {
-            player.x = gridSize;
-            player.teleport = true;
+        if (isValidDest(player.getX() + gridSize, player.getY(), player)) {
+            player.setX(player.getX() + player.getIncrement());
+        } else if (player.getY() == 9 * gridSize && player.getX() > player.getMax() - gridSize * 2) {
+            player.setX(gridSize);
+            player.setTeleport(true);
         }
     }
 
@@ -31,8 +31,8 @@ public class Right implements Direction {
 
     @Override
     public void moveIfValid(Mover mover) {
-        if (mover.direction.isValidDest(mover.x + mover.gridSize, mover.y, mover))
-            mover.x += mover.increment;
+        if (mover.getDirection().isValidDest(mover.getX() + mover.getGridSize(), mover.getY(), mover))
+            mover.setX(mover.getX() + mover.getIncrement());
     }
 
 

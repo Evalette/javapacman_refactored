@@ -4,16 +4,17 @@ import java.awt.*;
 class Ghost extends Mover {
 
     /* The pellet the ghost was last on top of */
-    int lastPelletX, lastPelletY;
+    private int lastPelletX;
+    private int lastPelletY;
 
-    final Image looksLeft;
-    final Image looksRight;
+    private final Image looksLeft;
+    private final Image looksRight;
 
     /*Constructor places ghost and updates states*/
     public Ghost(int x, int y, String leftImagePath, String rightImagePath) {
         super(x, y);
-        lastPelletX = pelletX;
-        lastPelletY = pelletY;
+        lastPelletX = getPelletX();
+        lastPelletY = getPelletY();
         looksLeft = Toolkit.getDefaultToolkit().getImage(leftImagePath);
         looksRight = Toolkit.getDefaultToolkit().getImage(rightImagePath);
     }
@@ -21,42 +22,50 @@ class Ghost extends Mover {
     /* update pellet status */
     public void updatePellet() {
         int tempX, tempY;
-        tempX = x / gridSize - 1;
-        tempY = y / gridSize - 1;
-        if (tempX != pelletX || tempY != pelletY) {
-            lastPelletX = pelletX;
-            lastPelletY = pelletY;
-            pelletX = tempX;
-            pelletY = tempY;
+        tempX = getX() / getGridSize() - 1;
+        tempY = getY() / getGridSize() - 1;
+        if (tempX != getPelletX() || tempY != getPelletY()) {
+            lastPelletX = getPelletX();
+            lastPelletY = getPelletY();
+            setPelletX(tempX);
+            setPelletY(tempY);
         }
 
     }
 
     /* Random movePlayer function for ghost */
     public void move() {
-        lastX = x;
-        lastY = y;
+        setLastX(getX());
+        setLastY(getY());
 
         /* If we can make a decision, pick a new direction randomly */
         if (isChoiceDest()) {
-            direction = newDirection();
+            setDirection(newDirection());
         }
 
         /* If that direction is valid, movePlayer that way */
-        direction.moveIfValid(this);
+        getDirection().moveIfValid(this);
     }
 
     public void drawLooksToTheRight(Graphics g) {
-        g.drawImage(looksRight, x, y, Color.BLACK, null);
+        g.drawImage(looksRight, getX(), getY(), Color.BLACK, null);
     }
 
     public void drawLooksToTheLeft(Graphics g) {
-        g.drawImage(looksLeft, x, y, Color.BLACK, null);
+        g.drawImage(looksLeft, getX(), getY(), Color.BLACK, null);
     }
 
     /* Draws one individual pellet.  Used to redraw pellets that ghosts have run over */
     public void fillPellet(Graphics g) {
         g.setColor(Color.YELLOW);
         g.fillOval(lastPelletX * 20 + 28, lastPelletY * 20 + 28, 4, 4);
+    }
+
+    public int getLastPelletX() {
+        return lastPelletX;
+    }
+
+    public int getLastPelletY() {
+        return lastPelletY;
     }
 }

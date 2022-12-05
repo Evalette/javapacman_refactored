@@ -12,7 +12,7 @@ public class Screen {
         isActive = active;
     }
 
-    final Image screenImage;
+    private final Image screenImage;
     public Screen(String fileName, boolean isActive) {
         screenImage = Toolkit.getDefaultToolkit().getImage(fileName);
         this.isActive = isActive;

@@ -15,6 +15,6 @@ public interface Direction {
     default boolean isValidDest(int x, int y, Mover mover) {
     /* The first statements check that the x and y are inbounds.  The last statement checks the map to
        see if it's a valid location */
-        return (((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && mover.state[x / 20 - 1][y / 20 - 1];
+        return (((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && mover.getState()[x / 20 - 1][y / 20 - 1];
     }
 }

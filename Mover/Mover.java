@@ -5,33 +5,34 @@ import java.util.Set;
 /* Both Player and Ghost inherit Mover.  Has generic functions relevant to both*/
 abstract class Mover {
     /* frameCount is used to count animation frames*/
-    int frameCount = 0;
+    private int frameCount = 0;
 
     /* State contains the game map */
-    final boolean[][] state;
+    private final boolean[][] state;
 
     /* gridSize is the size of one square in the game.
        max is the height/width of the game.
        increment is the speed at which the object moves,
        1 increment per movePlayer() call */
-    final int gridSize;
-    final int max;
-    final int increment;
+    private final int gridSize;
+    private final int max;
+    private final int increment;
     /* Direction ghost is heading */
-    Direction direction;
+    private Direction direction;
 
     /* first x and y*/
-    int initialX, initialY;
+    private final int initialX;
+    private final int initialY;
 
     /* Current ghost location */
-    int x;
-    int y;
+    private int x;
+    private int y;
     /* Last ghost location*/
-    int lastX;
-    int lastY;
+    private int lastX;
+    private int lastY;
     /* The pellet the ghost is on top of */
-    int pelletX;
-    int pelletY;
+    private int pelletX;
+    private int pelletY;
 
     /* Generic constructor */
     public Mover(int x, int y) {
@@ -119,5 +120,85 @@ abstract class Mover {
     public void resetPosition(){
         x = initialX;
         y = initialY;
+    }
+
+    public int getFrameCount() {
+        return frameCount;
+    }
+
+    public void setFrameCount(int frameCount) {
+        this.frameCount = frameCount;
+    }
+
+    public boolean[][] getState() {
+        return state;
+    }
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
+    public int getMax() {
+        return max;
+    }
+
+    public int getIncrement() {
+        return increment;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getLastX() {
+        return lastX;
+    }
+
+    public void setLastX(int lastX) {
+        this.lastX = lastX;
+    }
+
+    public int getLastY() {
+        return lastY;
+    }
+
+    public void setLastY(int lastY) {
+        this.lastY = lastY;
+    }
+
+    public int getPelletX() {
+        return pelletX;
+    }
+
+    public void setPelletX(int pelletX) {
+        this.pelletX = pelletX;
+    }
+
+    public int getPelletY() {
+        return pelletY;
+    }
+
+    public void setPelletY(int pelletY) {
+        this.pelletY = pelletY;
     }
 }
