@@ -609,4 +609,10 @@ public class Board extends JPanel {
             player.move();
         }
     }
+
+    void gotToTitleScreen() {
+        winScreen = false;
+        overScreen = false;
+        titleScreen = true;
+    }
 }

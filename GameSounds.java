@@ -38,9 +38,8 @@ public class GameSounds {
     }
 
     private AudioInputStream getAudioInputStream(String name) throws UnsupportedAudioFileException, IOException {
-        URL url;
         AudioInputStream audioIn;
-        url = this.getClass().getClassLoader().getResource(name);
+        URL url = this.getClass().getClassLoader().getResource(name);
         audioIn = AudioSystem.getAudioInputStream(url);
         return audioIn;
     }

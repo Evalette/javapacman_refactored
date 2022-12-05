@@ -184,9 +184,7 @@ public class Pacman {
 
             long currTime = System.currentTimeMillis();
             if (currTime - timer >= 5000) {
-                b.winScreen = false;
-                b.overScreen = false;
-                b.titleScreen = true;
+                b.gotToTitleScreen();
                 timer = -1;
             }
             b.repaint();
