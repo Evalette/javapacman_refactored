@@ -117,7 +117,6 @@ public class Board extends JPanel {
         pellets[10][8] = false;
     }
 
-
     /* Function is called during drawing of the map.
        Whenever a portion of the map is covered up with a barrier,
        the map and pellets arrays are updated accordingly to note
@@ -131,7 +130,6 @@ public class Board extends JPanel {
             }
         }
     }
-
 
     /* Draws the appropriate number of lives on the bottom left of the screen.
        Also draws the menu */
