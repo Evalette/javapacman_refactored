@@ -1,8 +1,8 @@
 /* This is the pacman object */
 class Player extends Mover {
     /* Direction is used in demoMode, currDirection and desiredDirection are used in non demoMode*/
-    char currDirection;
-    char desiredDirection;
+    Direction currDirection;
+    Direction desiredDirection;
 
     /* Keeps track of pellets eaten to determine end of game */
     int pelletsEaten;
@@ -19,8 +19,8 @@ class Player extends Mover {
 
         teleport = false;
         pelletsEaten = 0;
-        currDirection = 'L';
-        desiredDirection = 'L';
+        currDirection = new Left();
+        desiredDirection = new Left();
     }
 
     /* This function is used for demoMode.  It is copied from the Ghost class.  See that for comments */
@@ -30,41 +30,12 @@ class Player extends Mover {
         if (isChoiceDest()) {
             direction = newDirection();
         }
-        moveIntoDirection(direction, gridSize);
+        direction.movePlayer(this, gridSize);
         currDirection = direction;
         frameCount++;
     }
 
-    private void moveIntoDirection(char direction, int gridSize) {
-        switch (direction) {
-            case 'L':
-                if (isValidDest(x - increment, y)) {
-                    x -= increment;
-                } else if (y == 9 * gridSize && x < 2 * gridSize) {
-                    x = max - gridSize;
-                    teleport = true;
-                }
-                break;
-            case 'R':
-                if (isValidDest(x + gridSize, y)) {
-                    x += increment;
-                } else if (y == 9 * gridSize && x > max - gridSize * 2) {
-                    x = gridSize;
-                    teleport = true;
-                }
-                break;
-            case 'U':
-                if (isValidDest(x, y - increment))
-                    y -= increment;
-                break;
-            case 'D':
-                if (isValidDest(x, y + gridSize))
-                    y += increment;
-                break;
-        }
-    }
-
-    /* The move function moves the pacman for one frame in non demo mode */
+    /* The movePlayer function moves the pacman for one frame in non demo mode */
     public void move() {
         int gridSize = 20;
         lastX = x;
@@ -74,16 +45,13 @@ class Player extends Mover {
         /*Can only turn if we're in center of a grid*/
         if (x % 20 == 0 && y % 20 == 0 ||
                 /* Or if we're reversing*/
-                (desiredDirection == 'L' && currDirection == 'R') ||
-                (desiredDirection == 'R' && currDirection == 'L') ||
-                (desiredDirection == 'U' && currDirection == 'D') ||
-                (desiredDirection == 'D' && currDirection == 'U')
+                (desiredDirection.isOpposite(currDirection))
         ) {
-            moveIfValid(desiredDirection);
+            desiredDirection.moveIfValid(this);
         }
-        /* If we haven't moved, then move in the direction the pacman was headed anyway */
+        /* If we haven't moved, then movePlayer in the direction the pacman was headed anyway */
         if (lastX == x && lastY == y) {
-            moveIntoDirection(currDirection, gridSize);
+            currDirection.movePlayer(this, gridSize);
         }
 
         /* If we did change direction, update currDirection to reflect that */
@@ -91,7 +59,7 @@ class Player extends Mover {
             currDirection = desiredDirection;
         }
 
-        /* If we didn't move at all, set the stopped flag */
+        /* If we didn't movePlayer at all, set the stopped flag */
         if (lastX == x && lastY == y)
             stopped = true;
 

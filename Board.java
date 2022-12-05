@@ -12,10 +12,6 @@ public class Board extends JPanel {
     /* Initialize the images*/
     /* For NOT JAR file*/
     final Image pacmanImage = Toolkit.getDefaultToolkit().getImage("img/pacman.jpg");
-    final Image pacmanUpImage = Toolkit.getDefaultToolkit().getImage("img/pacmanup.jpg");
-    final Image pacmanDownImage = Toolkit.getDefaultToolkit().getImage("img/pacmandown.jpg");
-    final Image pacmanLeftImage = Toolkit.getDefaultToolkit().getImage("img/pacmanleft.jpg");
-    final Image pacmanRightImage = Toolkit.getDefaultToolkit().getImage("img/pacmanright.jpg");
     final Image ghost10 = Toolkit.getDefaultToolkit().getImage("img/ghost10.jpg");
     final Image ghost20 = Toolkit.getDefaultToolkit().getImage("img/ghost20.jpg");
     final Image ghost30 = Toolkit.getDefaultToolkit().getImage("img/ghost30.jpg");
@@ -610,12 +606,7 @@ public class Board extends JPanel {
             if (player.frameCount >= 10)
                 player.frameCount = 0;
 
-            switch (player.currDirection) {
-                case 'L' -> g.drawImage(pacmanLeftImage, player.x, player.y, Color.BLACK, null);
-                case 'R' -> g.drawImage(pacmanRightImage, player.x, player.y, Color.BLACK, null);
-                case 'U' -> g.drawImage(pacmanUpImage, player.x, player.y, Color.BLACK, null);
-                case 'D' -> g.drawImage(pacmanDownImage, player.x, player.y, Color.BLACK, null);
-            }
+            player.currDirection.drawImage(g, player);
         }
 
         /* Draw the border around the game in case it was overwritten by ghost movement or something */

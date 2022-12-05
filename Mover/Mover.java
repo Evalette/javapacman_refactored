@@ -12,12 +12,12 @@ abstract class Mover {
     /* gridSize is the size of one square in the game.
        max is the height/width of the game.
        increment is the speed at which the object moves,
-       1 increment per move() call */
+       1 increment per movePlayer() call */
     final int gridSize;
     final int max;
     final int increment;
     /* Direction ghost is heading */
-    char direction;
+    Direction direction;
     /* Current ghost location */
     int x;
     int y;
@@ -39,7 +39,7 @@ abstract class Mover {
                 state[i][j] = false;
             }
         }
-        direction = 'L';
+        direction = new Left();
         this.x = x;
         this.y = y;
         this.lastX = x;
@@ -55,29 +55,16 @@ abstract class Mover {
         }
     }
 
-    /* Determines if a set of coordinates is a valid destination.*/
-    public boolean isValidDest(int x, int y) {
-    /* The first statements check that the x and y are inbounds.  The last statement checks the map to
-       see if it's a valid location */
-        return (((x) % 20 == 0) || ((y) % 20) == 0) && 20 <= x && x < 400 && 20 <= y && y < 400 && state[x / 20 - 1][y / 20 - 1];
-    }
-
-    /* Chooses a new direction randomly for the ghost to move */
-    public char newDirection() {
+    /* Chooses a new direction randomly for the ghost to movePlayer */
+    public Direction newDirection() {
         int random;
-        char backwards = 'U';
         int lookX = x, lookY = y;
-        Set<Character> set = new HashSet<>();
-        switch (direction) {
-            case 'L' -> backwards = 'R';
-            case 'R' -> backwards = 'L';
-            case 'U' -> backwards = 'D';
-            case 'D' -> backwards = 'U';
-        }
+        Set<Direction> set = new HashSet<>();
+        Direction backwards = direction.getOpposite();
 
-        char newDirection = backwards;
+        Direction newDirection = backwards;
         /* While we still haven't found a valid direction */
-        while (newDirection == backwards || !isValidDest(lookX, lookY)) {
+        while (newDirection.equals(backwards) || !direction.isValidDest(lookX, lookY, this)) {
             /* If we've tried every location, turn around and break the loop */
             if (set.size() == 3) {
                 newDirection = backwards;
@@ -90,19 +77,19 @@ abstract class Mover {
             /* Randomly choose a direction */
             random = (int) (Math.random() * 4) + 1;
             if (random == 1) {
-                newDirection = 'L';
+                newDirection = new Left();
                 lookX -= increment;
             } else if (random == 2) {
-                newDirection = 'R';
+                newDirection = new Right();
                 lookX += gridSize;
             } else if (random == 3) {
-                newDirection = 'U';
+                newDirection = new Up();
                 lookY -= increment;
             } else if (random == 4) {
-                newDirection = 'D';
+                newDirection = new Down();
                 lookY += gridSize;
             }
-            if (newDirection != backwards) {
+            if (!newDirection.equals(backwards)) {
                 set.add(newDirection);
             }
         }
@@ -112,26 +99,5 @@ abstract class Mover {
     /* Determines if the location is one where the ghost has to make a decision*/
     public boolean isChoiceDest() {
         return x % gridSize == 0 && y % gridSize == 0;
-    }
-
-    protected void moveIfValid(char direction) {
-        switch (direction) {
-            case 'L':
-                if (isValidDest(x - increment, y))
-                    x -= increment;
-                break;
-            case 'R':
-                if (isValidDest(x + gridSize, y))
-                    x += increment;
-                break;
-            case 'U':
-                if (isValidDest(x, y - increment))
-                    y -= increment;
-                break;
-            case 'D':
-                if (isValidDest(x, y + gridSize))
-                    y += increment;
-                break;
-        }
     }
 }

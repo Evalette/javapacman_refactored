@@ -25,7 +25,7 @@ class Ghost extends Mover {
 
     }
 
-    /* Random move function for ghost */
+    /* Random movePlayer function for ghost */
     public void move() {
         lastX = x;
         lastY = y;
@@ -35,8 +35,8 @@ class Ghost extends Mover {
             direction = newDirection();
         }
 
-        /* If that direction is valid, move that way */
-        moveIfValid(direction);
+        /* If that direction is valid, movePlayer that way */
+        direction.moveIfValid(this);
     }
 
 }

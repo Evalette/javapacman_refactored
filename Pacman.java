@@ -125,9 +125,9 @@ public class Pacman implements MouseListener, KeyListener {
         }
 
 
-        /* If we have a normal game state, move all pieces and update pellet status */
+        /* If we have a normal game state, movePlayer all pieces and update pellet status */
         if (!New) {
-      /* The pacman player has two functions, demoMove if we're in demo mode and move if we're in
+      /* The pacman player has two functions, demoMove if we're in demo mode and movePlayer if we're in
          user playable mode.  Call the appropriate one here */
             if (b.demo) {
                 b.player.demoMove();
@@ -135,7 +135,7 @@ public class Pacman implements MouseListener, KeyListener {
                 b.player.move();
             }
 
-            /* Also move the ghosts, and update the pellet states */
+            /* Also movePlayer the ghosts, and update the pellet states */
             b.ghost1.move();
             b.ghost2.move();
             b.ghost3.move();
@@ -159,9 +159,9 @@ public class Pacman implements MouseListener, KeyListener {
             }
 
             /* Move all game elements back to starting positions and orientations */
-            b.player.currDirection = 'L';
-            b.player.direction = 'L';
-            b.player.desiredDirection = 'L';
+            b.player.currDirection = new Left();
+            b.player.direction = new Left();
+            b.player.desiredDirection = new Left();
             b.player.x = 200;
             b.player.y = 300;
             b.ghost1.x = 180;
@@ -210,14 +210,23 @@ public class Pacman implements MouseListener, KeyListener {
         }
 
         /* Otherwise, key presses control the player! */
-      switch (e.getKeyCode()) {
-        case KeyEvent.VK_LEFT -> b.player.desiredDirection = 'L';
-        case KeyEvent.VK_RIGHT -> b.player.desiredDirection = 'R';
-        case KeyEvent.VK_UP -> b.player.desiredDirection = 'U';
-        case KeyEvent.VK_DOWN -> b.player.desiredDirection = 'D';
-      }
+        int keyCode = e.getKeyCode();
+        b.player.desiredDirection = getDesiredDirection(keyCode);
 
         repaint();
+    }
+
+    private Direction getDesiredDirection(int keyCode) {
+        if (keyCode == KeyEvent.VK_LEFT) {
+            return new Left();
+        } else if (keyCode == KeyEvent.VK_RIGHT) {
+            return new Right();
+        } else if (keyCode == KeyEvent.VK_UP) {
+            return new Up();
+        } else if (keyCode == KeyEvent.VK_DOWN) {
+            return new Down();
+        }
+        return null;
     }
 
     /* This function detects user clicks on the menu items at the bottom of the screen */
