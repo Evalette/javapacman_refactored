@@ -213,7 +213,11 @@ public class Pacman {
             b.player.updatePellet();
         }
 
-        /* We either have a new game or the user has died, either way we have to reset the board */
+        /* We either have a new game or the user has died, either way we have to resetBoard the board */
+        resetBoard(New);
+    }
+
+    private void resetBoard(boolean New) {
         if (b.stopped || New) {
             /*Temporarily stop advancing frames */
             frameTimer.stop();
@@ -224,20 +228,7 @@ public class Pacman {
                 stepFrame(false);
             }
 
-            /* Move all game elements back to starting positions and orientations */
-            b.player.currDirection = new Left();
-            b.player.direction = new Left();
-            b.player.desiredDirection = new Left();
-            b.player.x = 200;
-            b.player.y = 300;
-            b.ghosts.get(0).x = 180;
-            b.ghosts.get(0).x = 180;
-            b.ghosts.get(1).x = 200;
-            b.ghosts.get(1).y = 180;
-            b.ghosts.get(2).x = 220;
-            b.ghosts.get(2).y = 180;
-            b.ghosts.get(3).x = 220;
-            b.ghosts.get(3).y = 180;
+            b.resetStartingPositionsAndOrientations();
 
             /* Advance a frame to display main state*/
             b.repaint(0, 0, 600, 600);

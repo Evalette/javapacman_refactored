@@ -574,4 +574,21 @@ public class Board extends JPanel {
             repaint(ghost.x - 20, ghost.y - 20, 80, 80);
         }
     }
+
+    void resetStartingPositionsAndOrientations() {
+        /* Move all game elements back to starting positions and orientations */
+        player.currDirection = new Left();
+        player.direction = new Left();
+        player.desiredDirection = new Left();
+        player.x = 200;
+        player.y = 300;
+        ghosts.get(0).x = 180;
+        ghosts.get(0).x = 180;
+        ghosts.get(1).x = 200;
+        ghosts.get(1).y = 180;
+        ghosts.get(2).x = 220;
+        ghosts.get(2).y = 180;
+        ghosts.get(3).x = 220;
+        ghosts.get(3).y = 180;
+    }
 }
