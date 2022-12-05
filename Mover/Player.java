@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.LinkedList;
 
 /* This is the pacman object */
 class Player extends Mover {
@@ -85,5 +86,19 @@ class Player extends Mover {
 
     public void drawPacMan(Graphics g){
         g.drawImage(pacmanImage, x, y, Color.BLACK, null);
+    }
+
+    public void killPacMan(Graphics g, int width, int height) {
+        g.fillRect(x, y, width, height);
+    }
+
+    public boolean collidesWith(LinkedList<Ghost> ghosts) {
+        for (Ghost ghost: ghosts) {
+            if (x == ghost.x && Math.abs(y - ghost.y) < 10)
+                return true;
+            else if (y == ghost.y && Math.abs(x - ghost.x) < 10)
+                return true;
+        }
+        return false;
     }
 }

@@ -101,4 +101,12 @@ abstract class Mover {
     public boolean isChoiceDest() {
         return x % gridSize == 0 && y % gridSize == 0;
     }
+
+    public void delete(Graphics g) {
+        g.fillRect(lastX, lastY, 20, 20);
+    }
+
+    public void copyArea(Graphics g) {
+        g.copyArea(x - 20, y - 20, 80, 80, 0, 0);
+    }
 }

@@ -52,4 +52,10 @@ class Ghost extends Mover {
     public void drawLooksToTheLeft(Graphics g) {
         g.drawImage(looksLeft, x, y, Color.BLACK, null);
     }
+
+    /* Draws one individual pellet.  Used to redraw pellets that ghosts have run over */
+    public void fillPellet(Graphics g) {
+        g.setColor(Color.YELLOW);
+        g.fillOval(lastPelletX * 20 + 28, lastPelletY * 20 + 28, 4, 4);
+    }
 }

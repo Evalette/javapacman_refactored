@@ -2,10 +2,8 @@
 
 import java.awt.*;
 import javax.swing.JPanel;
-import java.lang.Math;
 import java.util.*;
 import java.io.*;
-
 
 /*This board class contains the player, ghosts, pellets, and most of the game logic.*/
 public class Board extends JPanel {
@@ -16,11 +14,9 @@ public class Board extends JPanel {
     final Image winScreenImage = Toolkit.getDefaultToolkit().getImage("img/winScreen.jpg");
 
     /* Initialize the player and ghosts */
-    Player player = new Player(200, 300, "img/pacman.jpg");
-    Ghost ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
-    Ghost ghost2 = new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg");
-    Ghost ghost3 = new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg");
-    Ghost ghost4 = new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg");
+    Player player;
+
+    LinkedList<Ghost> ghosts = new LinkedList<>();
 
     /* Timer is used for playing sound effects and animations */
     long timer = System.currentTimeMillis();
@@ -75,6 +71,16 @@ public class Board extends JPanel {
         gridSize = 20;
         New = 0;
         titleScreen = true;
+
+        player = new Player(200, 300, "img/pacman.jpg");
+        Ghost ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
+        Ghost ghost2 = new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg");
+        Ghost ghost3 = new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg");
+        Ghost ghost4 = new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg");
+        ghosts.add(ghost1);
+        ghosts.add(ghost2);
+        ghosts.add(ghost3);
+        ghosts.add(ghost4);
     }
 
     /* Reads the high scores file and saves it */
@@ -195,97 +201,62 @@ public class Board extends JPanel {
         g.drawRect(19, 19, 382, 382);
         g.setColor(Color.BLUE);
 
-        g.fillRect(40, 40, 60, 20);
-        updateMap(40, 40, 60, 20);
-        g.fillRect(120, 40, 60, 20);
-        updateMap(120, 40, 60, 20);
-        g.fillRect(200, 20, 20, 40);
-        updateMap(200, 20, 20, 40);
-        g.fillRect(240, 40, 60, 20);
-        updateMap(240, 40, 60, 20);
-        g.fillRect(320, 40, 60, 20);
-        updateMap(320, 40, 60, 20);
-        g.fillRect(40, 80, 60, 20);
-        updateMap(40, 80, 60, 20);
-        g.fillRect(160, 80, 100, 20);
-        updateMap(160, 80, 100, 20);
-        g.fillRect(200, 80, 20, 60);
-        updateMap(200, 80, 20, 60);
-        g.fillRect(320, 80, 60, 20);
-        updateMap(320, 80, 60, 20);
+        fillRectAndUpdateMap(g, 40, 40, 60, 20);
+        fillRectAndUpdateMap(g, 120, 40, 60, 20);
+        fillRectAndUpdateMap(g, 200, 20, 20, 40);
+        fillRectAndUpdateMap(g, 240, 40, 60, 20);
+        fillRectAndUpdateMap(g, 320, 40, 60, 20);
+        fillRectAndUpdateMap(g, 40, 80, 60, 20);
+        fillRectAndUpdateMap(g, 160, 80, 100, 20);
+        fillRectAndUpdateMap(g, 200, 80, 20, 60);
+        fillRectAndUpdateMap(g, 320, 80, 60, 20);
 
-        g.fillRect(20, 120, 80, 60);
-        updateMap(20, 120, 80, 60);
-        g.fillRect(320, 120, 80, 60);
-        updateMap(320, 120, 80, 60);
-        g.fillRect(20, 200, 80, 60);
-        updateMap(20, 200, 80, 60);
-        g.fillRect(320, 200, 80, 60);
-        updateMap(320, 200, 80, 60);
+        fillRectAndUpdateMap(g, 20, 120, 80, 60);
+        fillRectAndUpdateMap(g, 320, 120, 80, 60);
+        fillRectAndUpdateMap(g, 20, 200, 80, 60);
+        fillRectAndUpdateMap(g, 320, 200, 80, 60);
 
-        g.fillRect(160, 160, 40, 20);
-        updateMap(160, 160, 40, 20);
-        g.fillRect(220, 160, 40, 20);
-        updateMap(220, 160, 40, 20);
-        g.fillRect(160, 180, 20, 20);
-        updateMap(160, 180, 20, 20);
-        g.fillRect(160, 200, 100, 20);
-        updateMap(160, 200, 100, 20);
-        g.fillRect(240, 180, 20, 20);
-        updateMap(240, 180, 20, 20);
+        fillRectAndUpdateMap(g, 160, 160, 40, 20);
+        fillRectAndUpdateMap(g, 220, 160, 40, 20);
+        fillRectAndUpdateMap(g, 160, 180, 20, 20);
+        fillRectAndUpdateMap(g, 160, 200, 100, 20);
+        fillRectAndUpdateMap(g, 240, 180, 20, 20);
         g.setColor(Color.BLUE);
 
 
-        g.fillRect(120, 120, 60, 20);
-        updateMap(120, 120, 60, 20);
-        g.fillRect(120, 80, 20, 100);
-        updateMap(120, 80, 20, 100);
-        g.fillRect(280, 80, 20, 100);
-        updateMap(280, 80, 20, 100);
-        g.fillRect(240, 120, 60, 20);
-        updateMap(240, 120, 60, 20);
+        fillRectAndUpdateMap(g, 120, 120, 60, 20);
+        fillRectAndUpdateMap(g, 120, 80, 20, 100);
+        fillRectAndUpdateMap(g, 280, 80, 20, 100);
+        fillRectAndUpdateMap(g, 240, 120, 60, 20);
 
-        g.fillRect(280, 200, 20, 60);
-        updateMap(280, 200, 20, 60);
-        g.fillRect(120, 200, 20, 60);
-        updateMap(120, 200, 20, 60);
-        g.fillRect(160, 240, 100, 20);
-        updateMap(160, 240, 100, 20);
-        g.fillRect(200, 260, 20, 40);
-        updateMap(200, 260, 20, 40);
+        fillRectAndUpdateMap(g, 280, 200, 20, 60);
+        fillRectAndUpdateMap(g, 120, 200, 20, 60);
+        fillRectAndUpdateMap(g, 160, 240, 100, 20);
+        fillRectAndUpdateMap(g, 200, 260, 20, 40);
 
-        g.fillRect(120, 280, 60, 20);
-        updateMap(120, 280, 60, 20);
-        g.fillRect(240, 280, 60, 20);
-        updateMap(240, 280, 60, 20);
+        fillRectAndUpdateMap(g, 120, 280, 60, 20);
+        fillRectAndUpdateMap(g, 240, 280, 60, 20);
 
-        g.fillRect(40, 280, 60, 20);
-        updateMap(40, 280, 60, 20);
-        g.fillRect(80, 280, 20, 60);
-        updateMap(80, 280, 20, 60);
-        g.fillRect(320, 280, 60, 20);
-        updateMap(320, 280, 60, 20);
-        g.fillRect(320, 280, 20, 60);
-        updateMap(320, 280, 20, 60);
+        fillRectAndUpdateMap(g, 40, 280, 60, 20);
+        fillRectAndUpdateMap(g, 80, 280, 20, 60);
+        fillRectAndUpdateMap(g, 320, 280, 60, 20);
+        fillRectAndUpdateMap(g, 320, 280, 20, 60);
 
-        g.fillRect(20, 320, 40, 20);
-        updateMap(20, 320, 40, 20);
-        g.fillRect(360, 320, 40, 20);
-        updateMap(360, 320, 40, 20);
-        g.fillRect(160, 320, 100, 20);
-        updateMap(160, 320, 100, 20);
-        g.fillRect(200, 320, 20, 60);
-        updateMap(200, 320, 20, 60);
+        fillRectAndUpdateMap(g, 20, 320, 40, 20);
+        fillRectAndUpdateMap(g, 360, 320, 40, 20);
+        fillRectAndUpdateMap(g, 160, 320, 100, 20);
+        fillRectAndUpdateMap(g, 200, 320, 20, 60);
 
-        g.fillRect(40, 360, 140, 20);
-        updateMap(40, 360, 140, 20);
-        g.fillRect(240, 360, 140, 20);
-        updateMap(240, 360, 140, 20);
-        g.fillRect(280, 320, 20, 40);
-        updateMap(280, 320, 20, 60);
-        g.fillRect(120, 320, 20, 60);
-        updateMap(120, 320, 20, 60);
+        fillRectAndUpdateMap(g, 40, 360, 140, 20);
+        fillRectAndUpdateMap(g, 240, 360, 140, 20);
+        fillRectAndUpdateMap(g, 280, 320, 20, 40);
+        fillRectAndUpdateMap(g, 120, 320, 20, 60);
         drawLives(g);
+    }
+
+    private void fillRectAndUpdateMap(Graphics g, int x, int x1, int width, int height) {
+        g.fillRect(x, x1, width, height);
+        updateMap(x, x1, width, height);
     }
 
 
@@ -298,12 +269,6 @@ public class Board extends JPanel {
                     g.fillOval(i * 20 + 8, j * 20 + 8, 4, 4);
             }
         }
-    }
-
-    /* Draws one individual pellet.  Used to redraw pellets that ghosts have run over */
-    public void fillPellet(int x, int y, Graphics g) {
-        g.setColor(Color.YELLOW);
-        g.fillOval(x * 20 + 28, y * 20 + 28, 4, 4);
     }
 
     /* This is the main function that draws one entire frame of the game */
@@ -320,14 +285,11 @@ public class Board extends JPanel {
 
             /* Kill the pacman */
             if (dying == 4)
-                g.fillRect(player.x, player.y, 20, 7);
+                player.killPacMan(g, 20, 7);
             else if (dying == 3)
-                g.fillRect(player.x, player.y, 20, 14);
-            else if (dying == 2)
-                g.fillRect(player.x, player.y, 20, 20);
-            else if (dying == 1) {
-                g.fillRect(player.x, player.y, 20, 20);
-            }
+                player.killPacMan(g, 20, 14);
+            else if (dying == 2 || dying == 1)
+                player.killPacMan(g, 20, 20);
      
       /* Take .1 seconds on each frame of death, and then take 2 seconds
          for the final frame to allow for the sound effect to end */
@@ -414,10 +376,10 @@ public class Board extends JPanel {
         if (New == 1) {
             reset();
             player = new Player(200, 300, "img/pacman.jpg");
-            ghost1 = new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg");
-            ghost2 = new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg");
-            ghost3 = new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg");
-            ghost4 = new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg");
+            ghosts.set(0, new Ghost(180, 180, "img/ghost11.jpg", "img/ghost10.jpg"));
+            ghosts.set(1, new Ghost(200, 180, "img/ghost21.jpg", "img/ghost20.jpg"));
+            ghosts.set(2, new Ghost(220, 180, "img/ghost31.jpg", "img/ghost30.jpg"));
+            ghosts.set(3, new Ghost(220, 180, "img/ghost41.jpg", "img/ghost40.jpg"));
 
             currScore = 0;
             drawBoard(g);
@@ -427,10 +389,9 @@ public class Board extends JPanel {
             player.updateState(state);
             /* Don't let the player go in the ghost box*/
             player.state[9][7] = false;
-            ghost1.updateState(state);
-            ghost2.updateState(state);
-            ghost3.updateState(state);
-            ghost4.updateState(state);
+            for (Ghost ghost : ghosts) {
+                ghost.updateState(state);
+            }
 
             /* Draw the top menu bar*/
             g.setColor(Color.YELLOW);
@@ -464,31 +425,18 @@ public class Board extends JPanel {
         }
 
         /* Drawing optimization */
-        g.copyArea(player.x - 20, player.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost1.x - 20, ghost1.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost2.x - 20, ghost2.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost3.x - 20, ghost3.y - 20, 80, 80, 0, 0);
-        g.copyArea(ghost4.x - 20, ghost4.y - 20, 80, 80, 0, 0);
+        player.copyArea(g);
+        for (Ghost ghost :
+                ghosts) {
+            ghost.copyArea(g);
+        }
 
 
 
         /* Detect collisions */
-        if (player.x == ghost1.x && Math.abs(player.y - ghost1.y) < 10)
+        if (player.collidesWith(ghosts)) {
             oops = true;
-        else if (player.x == ghost2.x && Math.abs(player.y - ghost2.y) < 10)
-            oops = true;
-        else if (player.x == ghost3.x && Math.abs(player.y - ghost3.y) < 10)
-            oops = true;
-        else if (player.x == ghost4.x && Math.abs(player.y - ghost4.y) < 10)
-            oops = true;
-        else if (player.y == ghost1.y && Math.abs(player.x - ghost1.x) < 10)
-            oops = true;
-        else if (player.y == ghost2.y && Math.abs(player.x - ghost2.x) < 10)
-            oops = true;
-        else if (player.y == ghost3.y && Math.abs(player.x - ghost3.x) < 10)
-            oops = true;
-        else if (player.y == ghost4.y && Math.abs(player.x - ghost4.x) < 10)
-            oops = true;
+        }
 
         /* Kill the pacman */
         if (oops && !stopped) {
@@ -509,11 +457,11 @@ public class Board extends JPanel {
 
         /* Delete the players and ghosts */
         g.setColor(Color.BLACK);
-        g.fillRect(player.lastX, player.lastY, 20, 20);
-        g.fillRect(ghost1.lastX, ghost1.lastY, 20, 20);
-        g.fillRect(ghost2.lastX, ghost2.lastY, 20, 20);
-        g.fillRect(ghost3.lastX, ghost3.lastY, 20, 20);
-        g.fillRect(ghost4.lastX, ghost4.lastY, 20, 20);
+        player.delete(g);
+        for (Ghost ghost :
+                ghosts) {
+            ghost.delete(g);
+        }
 
         /* Eat pellets */
         if (pellets[player.pelletX][player.pelletY] && New != 2 && New != 3) {
@@ -565,35 +513,31 @@ public class Board extends JPanel {
 
 
         /* Replace pellets that have been run over by ghosts */
-        if (pellets[ghost1.lastPelletX][ghost1.lastPelletY])
-            fillPellet(ghost1.lastPelletX, ghost1.lastPelletY, g);
-        if (pellets[ghost2.lastPelletX][ghost2.lastPelletY])
-            fillPellet(ghost2.lastPelletX, ghost2.lastPelletY, g);
-        if (pellets[ghost3.lastPelletX][ghost3.lastPelletY])
-            fillPellet(ghost3.lastPelletX, ghost3.lastPelletY, g);
-        if (pellets[ghost4.lastPelletX][ghost4.lastPelletY])
-            fillPellet(ghost4.lastPelletX, ghost4.lastPelletY, g);
-
+        for (Ghost ghost :
+                ghosts) {
+            if (pellets[ghost.lastPelletX][ghost.lastPelletY])
+                ghost.fillPellet(g);
+        }
 
         /*Draw the ghosts */
-        if (ghost1.frameCount < 5) {
+        if (ghosts.get(0).frameCount < 5) {
             /* Draw first frame of ghosts */
-            ghost1.drawLooksToTheRight(g);
-            ghost2.drawLooksToTheRight(g);
-            ghost3.drawLooksToTheRight(g);
-            ghost4.drawLooksToTheRight(g);
-            ghost1.frameCount++;
+            for (Ghost ghost :
+                    ghosts) {
+                ghost.drawLooksToTheRight(g);
+            }
+            ghosts.get(0).frameCount++;
         } else {
             /* Draw second frame of ghosts */
-            ghost1.drawLooksToTheLeft(g);
-            ghost2.drawLooksToTheLeft(g);
-            ghost3.drawLooksToTheLeft(g);
-            ghost4.drawLooksToTheLeft(g);
+            for (Ghost ghost :
+                    ghosts) {
+                ghost.drawLooksToTheLeft(g);
+            }
 
-            if (ghost1.frameCount >= 10)
-                ghost1.frameCount = 0;
+            if (ghosts.get(0).frameCount >= 10)
+                ghosts.get(0).frameCount = 0;
             else
-                ghost1.frameCount++;
+                ghosts.get(0).frameCount++;
         }
 
         /* Draw the pacman */
